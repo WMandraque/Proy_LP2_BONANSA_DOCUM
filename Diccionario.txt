@@ -1,0 +1,6 @@
+Cliente Juridico
+---------------
+
+CIIU: codigo internaciona industrial unificado ---> sirve para clasificar las actividades economicas de las empresas.
+
+cargo: es el tipo de cargo del representante de la compañia
