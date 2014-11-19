@@ -5,10 +5,10 @@
         <text>BONANSA%20MENU%20PRINCIPAL%0Ahttp%3A//www.Bonansa.com</text>
       </controlProperties>
     </control>
-    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="139" measuredW="150" measuredH="213" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="386" measuredW="150" measuredH="456" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
-        <selectedIndex>0</selectedIndex>
-        <text>Inicio%0AOrden%20de%20recojo%0AMapa%0AIncidencia%0ASalir</text>
+        <selectedIndex>18</selectedIndex>
+        <text>Inicio%0ACliente%0A-%20Registrar%20Cliente%0A-%20Modificar%20Cliente%0A-%20Eliminar%20Cliente%0A-%20Listar%20Clientes%0AEmpleado%0A-%20Registrar%20Empleado%0A-%20Modificar%20Empleado%0A-%20Eliminar%20Empleado%0A-%20Listar%20Empleados%0AVehiculo%0A-%20Registrar%20Vehiculo%0A-%20Modificar%20Vehiculo%0A-%20Eliminar%20Vehiculo%0A-%20Listar%20Vehiculos%0AAfp%0A-%20Registrar%20Afp%0A-%20Modificar%20Afp%0A-%20Eliminar%20Afp%0A-%20Listar%20Afps%0ABanco%0A-%20Registrar%20Banco%0A-%20Modificar%20Banco%0A-%20Eliminar%20Banco%0A-%20Listar%20Bancos%0AGRT%0AGraficos%20estadisticos%0AMapa%0ASeguimiento%20de%20vehiculo</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>
@@ -20,9 +20,9 @@
         <text>Nivel%20de%20acceso</text>
       </controlProperties>
     </control>
-    <control controlID="9" controlTypeID="com.balsamiq.mockups::ComboBox" x="58" y="413" w="192" h="-1" measuredW="147" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::ComboBox" x="58" y="413" w="192" h="-1" measuredW="172" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Empleado%20conductor</text>
+        <text>Adminstrador%20del%20Sitema</text>
       </controlProperties>
     </control>
     <control controlID="12" controlTypeID="com.balsamiq.mockups::HSplitter" x="312" y="235" w="-1" h="832" measuredW="11" measuredH="100" zOrder="5" locked="false" isInGroup="-1"/>
@@ -41,9 +41,9 @@
         <text>BONANSA</text>
       </controlProperties>
     </control>
-    <control controlID="19" controlTypeID="com.balsamiq.mockups::Label" x="1355" y="143" w="-1" h="-1" measuredW="187" measuredH="21" zOrder="12" locked="false" isInGroup="-1">
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::Label" x="1355" y="143" w="-1" h="-1" measuredW="226" measuredH="21" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Bienvenido%20Ricardo%20lazo%20pedazo</text>
+        <text>Bienvenido%20sebastian%20paraguay%20barzola</text>
       </controlProperties>
     </control>
     <control controlID="20" controlTypeID="com.balsamiq.mockups::Button" x="1596" y="139" w="-1" h="-1" measuredW="100" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
@@ -56,46 +56,56 @@
         <text>Salir</text>
       </controlProperties>
     </control>
-    <control controlID="22" controlTypeID="com.balsamiq.mockups::Label" x="332" y="251" w="256" h="37" measuredW="92" measuredH="37" zOrder="15" locked="false" isInGroup="-1">
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::TextArea" x="338" y="254" w="1460" h="41" measuredW="200" measuredH="140" zOrder="15" locked="false" isInGroup="-1">
       <controlProperties>
-        <size>28</size>
-        <text>INICIO</text>
-      </controlProperties>
-    </control>
-    <control controlID="24" controlTypeID="com.balsamiq.mockups::TextArea" x="336" y="288" w="1463" h="37" measuredW="200" measuredH="140" zOrder="16" locked="false" isInGroup="-1">
-      <controlProperties>
+        <align>left</align>
+        <color>65535</color>
         <size>20</size>
-        <text>Mensaje%20del%20sistema.......%20Primera%20ves%20que%20ingresa%20al%20sistema</text>
+        <text>Registrar%20Nuevo%20AFP</text>
       </controlProperties>
     </control>
-    <control controlID="25" controlTypeID="com.balsamiq.mockups::TextArea" x="336" y="339" w="1460" h="171" measuredW="200" measuredH="140" zOrder="17" locked="false" isInGroup="-1">
+    <control controlID="69" controlTypeID="com.balsamiq.mockups::Button" x="741" y="505" w="191" h="47" measuredW="98" measuredH="27" zOrder="16" locked="false" isInGroup="-1">
       <controlProperties>
+        <text>REGISTRAR</text>
+      </controlProperties>
+    </control>
+    <control controlID="70" controlTypeID="com.balsamiq.mockups::Button" x="965" y="505" w="191" h="47" measuredW="75" measuredH="27" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>LIMPIAR</text>
+      </controlProperties>
+    </control>
+    <control controlID="73" controlTypeID="com.balsamiq.mockups::Button" x="1171" y="505" w="191" h="47" measuredW="62" measuredH="27" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>SALIR</text>
+      </controlProperties>
+    </control>
+    <control controlID="74" controlTypeID="com.balsamiq.mockups::FieldSet" x="338" y="302" w="1460" h="171" measuredW="200" measuredH="170" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>16776960</color>
+        <text>Datos%20Generales%20del%20AFP</text>
+      </controlProperties>
+    </control>
+    <control controlID="75" controlTypeID="com.balsamiq.mockups::Label" x="805" y="348" w="51" h="26" measuredW="21" measuredH="22" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>ID</text>
+      </controlProperties>
+    </control>
+    <control controlID="76" controlTypeID="com.balsamiq.mockups::TextInput" x="906" y="348" w="257" h="-1" measuredW="79" measuredH="27" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>disabled</state>
         <text/>
       </controlProperties>
     </control>
-    <control controlID="26" controlTypeID="com.balsamiq.mockups::MultilineButton" x="786" y="364" w="119" h="109" measuredW="220" measuredH="55" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="77" controlTypeID="com.balsamiq.mockups::Label" x="805" y="386" w="89" h="26" measuredW="32" measuredH="22" zOrder="22" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Ver%20mis%20ordenes%20de%20recojo</text>
+        <size>14</size>
+        <text>AFP</text>
       </controlProperties>
     </control>
-    <control controlID="27" controlTypeID="com.balsamiq.mockups::MultilineButton" x="914" y="364" w="119" h="109" measuredW="103" measuredH="55" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="80" controlTypeID="com.balsamiq.mockups::TextInput" x="906" y="386" w="257" h="-1" measuredW="79" measuredH="27" zOrder="23" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Ver%20mapa</text>
-      </controlProperties>
-    </control>
-    <control controlID="28" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1043" y="364" w="119" h="109" measuredW="334" measuredH="55" zOrder="20" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Generar%20Guia%20de%20Remision%20del%20Tranportista</text>
-      </controlProperties>
-    </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1171" y="364" w="119" h="109" measuredW="146" measuredH="55" zOrder="21" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Registrar%20un%20afp</text>
-      </controlProperties>
-    </control>
-    <control controlID="42" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1305" y="364" w="119" h="109" measuredW="169" measuredH="55" zOrder="22" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Registrar%20incidencia</text>
+        <text/>
       </controlProperties>
     </control>
   </controls>

@@ -8,7 +8,7 @@
     <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="274" measuredW="150" measuredH="348" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <selectedIndex>0</selectedIndex>
-        <text>Inicio%0ACliente%0AEmpleado%0AVehiculo%0AAfp%0ABancos%0AGRT%0AGraficos%0AMapa%0ASeguimiento%20de%20vehiculo</text>
+        <text>Inicio%0ACliente%0AEmpleado%0AVehiculo%0AAfp%0ABancos%0AOrden%20de%20recojo%0AMapa%0ASeguimiento%20de%20vehiculo%0ASalir</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>
@@ -20,9 +20,9 @@
         <text>Nivel%20de%20acceso</text>
       </controlProperties>
     </control>
-    <control controlID="9" controlTypeID="com.balsamiq.mockups::ComboBox" x="58" y="413" w="192" h="-1" measuredW="172" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::ComboBox" x="58" y="413" w="192" h="-1" measuredW="184" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Adminstrador%20del%20Sitema</text>
+        <text>Recepcionista%20del%20Sistema</text>
       </controlProperties>
     </control>
     <control controlID="12" controlTypeID="com.balsamiq.mockups::HSplitter" x="312" y="235" w="-1" h="832" measuredW="11" measuredH="100" zOrder="5" locked="false" isInGroup="-1"/>
@@ -41,9 +41,9 @@
         <text>BONANSA</text>
       </controlProperties>
     </control>
-    <control controlID="19" controlTypeID="com.balsamiq.mockups::Label" x="1355" y="143" w="-1" h="-1" measuredW="226" measuredH="21" zOrder="12" locked="false" isInGroup="-1">
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::Label" x="1355" y="143" w="-1" h="-1" measuredW="201" measuredH="21" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Bienvenido%20sebastian%20paraguay%20barzola</text>
+        <text>Bienvenida%20Tarja%20paraguay%20barzola</text>
       </controlProperties>
     </control>
     <control controlID="20" controlTypeID="com.balsamiq.mockups::Button" x="1596" y="139" w="-1" h="-1" measuredW="100" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
@@ -73,60 +73,44 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="26" controlTypeID="com.balsamiq.mockups::MultilineButton" x="465" y="361" w="119" h="109" measuredW="191" measuredH="55" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::MultilineButton" x="511" y="368" w="119" h="109" measuredW="153" measuredH="55" zOrder="18" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Registrar%20un%20empleado</text>
+        <text>Listar%20empleados</text>
       </controlProperties>
     </control>
-    <control controlID="27" controlTypeID="com.balsamiq.mockups::MultilineButton" x="593" y="361" w="119" h="109" measuredW="169" measuredH="55" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::MultilineButton" x="639" y="368" w="119" h="109" measuredW="131" measuredH="55" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Registrar%20un%20cliente</text>
+        <text>Listar%20clientes</text>
       </controlProperties>
     </control>
-    <control controlID="28" controlTypeID="com.balsamiq.mockups::MultilineButton" x="722" y="361" w="119" h="109" measuredW="165" measuredH="55" zOrder="20" locked="false" isInGroup="-1">
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::MultilineButton" x="768" y="368" w="119" h="109" measuredW="127" measuredH="55" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Registrar%20un%20banco</text>
+        <text>Listar%20bancos</text>
       </controlProperties>
     </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::MultilineButton" x="850" y="361" w="119" h="109" measuredW="146" measuredH="55" zOrder="21" locked="false" isInGroup="-1">
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::MultilineButton" x="896" y="368" w="119" h="109" measuredW="107" measuredH="55" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Registrar%20un%20afp</text>
+        <text>Listar%20afps</text>
       </controlProperties>
     </control>
-    <control controlID="30" controlTypeID="com.balsamiq.mockups::MultilineButton" x="979" y="361" w="119" h="109" measuredW="334" measuredH="55" zOrder="22" locked="false" isInGroup="-1">
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1167" y="368" w="119" h="109" measuredW="213" measuredH="55" zOrder="22" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Generar%20Guia%20de%20Remision%20del%20Tranportista</text>
+        <text>Generar%20Orden%20de%20recojo</text>
       </controlProperties>
     </control>
-    <control controlID="31" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1108" y="364" w="119" h="109" measuredW="147" measuredH="55" zOrder="23" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Ver%20estadisticas</text>
-      </controlProperties>
-    </control>
-    <control controlID="32" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1237" y="361" w="119" h="109" measuredW="103" measuredH="55" zOrder="24" locked="false" isInGroup="-1">
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1301" y="368" w="119" h="109" measuredW="103" measuredH="55" zOrder="23" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Ver%20Mapa</text>
       </controlProperties>
     </control>
-    <control controlID="33" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1371" y="361" w="119" h="109" measuredW="203" measuredH="55" zOrder="25" locked="false" isInGroup="-1">
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1437" y="371" w="119" h="109" measuredW="203" measuredH="55" zOrder="24" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Seguimiento%20de%20Vehiculo</text>
       </controlProperties>
     </control>
-    <control controlID="34" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1505" y="361" w="119" h="109" measuredW="301" measuredH="55" zOrder="26" locked="false" isInGroup="-1">
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1033" y="368" w="119" h="109" measuredW="140" measuredH="55" zOrder="25" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Ver%20registros%20de%20informes%20de%20acciones</text>
-      </controlProperties>
-    </control>
-    <control controlID="40" controlTypeID="com.balsamiq.mockups::TextArea" x="821" y="580" w="341" h="445" measuredW="200" measuredH="140" zOrder="27" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>57%20Empleados%20activos%0A--------------------------------------------------------------------------------------------------------%0A10%20Empleados%20inactivos%0A--------------------------------------------------------------------------------------------------------%0A58%20Clientes%20activos%0A--------------------------------------------------------------------------------------------------------%0A23%20Clientes%20inactivos%0A--------------------------------------------------------------------------------------------------------%0A20%20Bancos%20activos%0A--------------------------------------------------------------------------------------------------------%0A12%20Bancos%20inactivos%0A--------------------------------------------------------------------------------------------------------%0A10%20Afp%20activas%0A--------------------------------------------------------------------------------------------------------%0A100%20GRT%20registradas</text>
-      </controlProperties>
-    </control>
-    <control controlID="41" controlTypeID="com.balsamiq.mockups::TextArea" x="821" y="525" w="341" h="55" measuredW="200" measuredH="140" zOrder="28" locked="false" isInGroup="-1">
-      <controlProperties>
-        <align>center</align>
-        <text>Resumen%20de%20registros%20de%20tareas</text>
+        <text>Listar%20vehiculos</text>
       </controlProperties>
     </control>
   </controls>
