@@ -5,10 +5,10 @@
         <text>BONANSA%20MENU%20PRINCIPAL%0Ahttp%3A//www.Bonansa.com</text>
       </controlProperties>
     </control>
-    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="386" measuredW="150" measuredH="456" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="489" measuredW="164" measuredH="564" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <selectedIndex>23</selectedIndex>
-        <text>Inicio%0ACliente%0A-%20Registrar%20Cliente%0A-%20Modificar%20Cliente%0A-%20Eliminar%20Cliente%0A-%20Listar%20Clientes%0AEmpleado%0A-%20Registrar%20Empleado%0A-%20Modificar%20Empleado%0A-%20Eliminar%20Empleado%0A-%20Listar%20Empleados%0AVehiculo%0A-%20Registrar%20Vehiculo%0A-%20Modificar%20Vehiculo%0A-%20Eliminar%20Vehiculo%0A-%20Listar%20Vehiculos%0AAfp%0A-%20Registrar%20Afp%0A-%20Modificar%20Afp%0A-%20Eliminar%20Afp%0A-%20Listar%20Afps%0ABanco%0A-%20Registrar%20Banco%0A-%20Modificar%20Banco%0A-%20Eliminar%20Banco%0A-%20Listar%20Bancos%0AGRT%0AGraficos%20estadisticos%0AMapa%0ASeguimiento%20de%20vehiculo</text>
+        <text>Inicio%0ACliente%0A-%20Registrar%20Cliente%0A-%20Modificar%20Cliente%0A-%20Eliminar%20Cliente%0A-%20Listar%20Clientes%0AEmpleado%0A-%20Registrar%20Empleado%0A-%20Modificar%20Empleado%0A-%20Eliminar%20Empleado%0A-%20Listar%20Empleados%0AVehiculo%0A-%20Registrar%20Vehiculo%0A-%20Modificar%20Vehiculo%0A-%20Eliminar%20Vehiculo%0A-%20Listar%20Vehiculos%0AAfp%0A-%20Registrar%20Afp%0A-%20Modificar%20Afp%0A-%20Eliminar%20Afp%0A-%20Listar%20Afps%0ABanco%0A-%20Registrar%20Banco%0A-%20Modificar%20Banco%0A-%20Eliminar%20Banco%0A-%20Listar%20Bancos%0AGRT%0AIncidencias%0AGraficos%20estadisticos%0AReportes%0AMapa%0ASeguimiento%20de%20vehiculo%0ARegistro%20de%20acciones%20%28log%29%0ASalir</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>

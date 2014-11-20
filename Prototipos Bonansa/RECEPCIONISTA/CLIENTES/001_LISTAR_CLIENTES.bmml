@@ -5,10 +5,10 @@
         <text>BONANSA%20MENU%20PRINCIPAL%0Ahttp%3A//www.Bonansa.com</text>
       </controlProperties>
     </control>
-    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="327" measuredW="150" measuredH="402" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="355" measuredW="150" measuredH="402" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <selectedIndex>2</selectedIndex>
-        <text>Inicio%0ACliente%0A-Listar%20clientes%0AEmpleado%0AVehiculo%0AAfp%0ABancos%0AIncidencias%0AOrden%20de%20recojo%0AMapa%0ASeguimiento%20de%20vehiculo%0ASalir</text>
+        <text>Inicio%0ACliente%0A-%20Listar%20clientes%0AEmpleado%0AVehiculo%0AAfp%0ABancos%0AIncidencias%0AOrden%20de%20recojo%0AMapa%0ASeguimiento%20de%20vehiculo%0ASalir</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>
@@ -70,9 +70,9 @@
         <text>Datos%20Generales</text>
       </controlProperties>
     </control>
-    <control controlID="24" controlTypeID="com.balsamiq.mockups::ButtonBar" x="1581" y="1012" w="-1" h="-1" measuredW="191" measuredH="29" zOrder="17" locked="false" isInGroup="-1">
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::ButtonBar" x="1471" y="1006" w="-1" h="-1" measuredW="301" measuredH="29" zOrder="17" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Primero%2C%20Two%2C%20Three</text>
+        <text>Primero%2C%20Antes%2C1%2C2%2C3%2CFinal</text>
       </controlProperties>
     </control>
   </controls>

@@ -5,10 +5,10 @@
         <text>BONANSA%20MENU%20PRINCIPAL%0Ahttp%3A//www.Bonansa.com</text>
       </controlProperties>
     </control>
-    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="383" measuredW="150" measuredH="456" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="493" measuredW="164" measuredH="564" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <selectedIndex>3</selectedIndex>
-        <text>Inicio%0ACliente%0A-%20Registrar%20Cliente%0A-%20Modificar%20Cliente%0A-%20Eliminar%20Cliente%0A-%20Listar%20Clientes%0AEmpleado%0AVehiculo%0AAfp%0ABancos%0AGRT%0AGraficos%20estadistico%0AMapa%0ASeguimiento%20de%20vehiculo</text>
+        <text>Inicio%0ACliente%0A-%20Registrar%20Cliente%0A-%20Modificar%20Cliente%0A-%20Eliminar%20Cliente%0A-%20Listar%20Clientes%0AEmpleado%0AVehiculo%0AAfp%0ABancos%0AGRT%0AIncidencias%0AGraficos%20estadistico%0AReportes%0AMapa%0ASeguimiento%20de%20vehiculo%0ARegistro%20de%20acciones%20%28log%29%0ASalir</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>
