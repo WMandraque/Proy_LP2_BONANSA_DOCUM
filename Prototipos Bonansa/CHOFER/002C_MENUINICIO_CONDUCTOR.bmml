@@ -70,5 +70,60 @@
         <text>Datos%20Generales%20de%20la%20Guia%20de%20Remision%20del%20Tranportista</text>
       </controlProperties>
     </control>
+    <control controlID="45" controlTypeID="com.balsamiq.mockups::Label" x="435" y="371" w="-1" h="-1" measuredW="82" measuredH="22" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>Codigo%20GRT</text>
+      </controlProperties>
+    </control>
+    <control controlID="46" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="369" w="158" h="-1" measuredW="155" measuredH="27" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%3E%3EAUTOGENERADO%3C%3C</text>
+      </controlProperties>
+    </control>
+    <control controlID="47" controlTypeID="com.balsamiq.mockups::Label" x="441" y="404" w="-1" h="-1" measuredW="71" measuredH="22" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>Num.%20GRT</text>
+      </controlProperties>
+    </control>
+    <control controlID="48" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="402" w="158" h="-1" measuredW="79" measuredH="27" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="49" controlTypeID="com.balsamiq.mockups::Label" x="366" y="436" w="-1" h="-1" measuredW="154" measuredH="22" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>Fecha%20Inicio%20de%20Traslado</text>
+      </controlProperties>
+    </control>
+    <control controlID="50" controlTypeID="com.balsamiq.mockups::DateChooser" x="535" y="435" w="193" h="-1" measuredW="90" measuredH="25" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%20%20/%20%20/%20%20%20%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="51" controlTypeID="com.balsamiq.mockups::Label" x="446" y="473" w="-1" h="-1" measuredW="74" measuredH="22" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>Num.%20Placa</text>
+      </controlProperties>
+    </control>
+    <control controlID="52" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="471" w="158" h="-1" measuredW="79" measuredH="27" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="53" controlTypeID="com.balsamiq.mockups::Label" x="387" y="510" w="-1" h="-1" measuredW="133" measuredH="22" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>Licencia%20de%20Conducir</text>
+      </controlProperties>
+    </control>
+    <control controlID="54" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="508" w="158" h="-1" measuredW="79" measuredH="27" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
   </controls>
 </mockup>

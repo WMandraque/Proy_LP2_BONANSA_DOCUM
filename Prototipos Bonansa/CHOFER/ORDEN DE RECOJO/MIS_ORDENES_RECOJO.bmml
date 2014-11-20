@@ -7,7 +7,7 @@
     </control>
     <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="224" h="197" measuredW="209" measuredH="267" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
-        <selectedIndex>1</selectedIndex>
+        <selectedIndex>2</selectedIndex>
         <text>Inicio%0AOrden%20de%20recojo%0A-%20Mis%20ordenes%20de%20recojo%0AIncidencia%0A-%20Registrar%20Incidencia%0AGuia%20de%20Remision%20del%20Transportista%0AMapa%0ASalir</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
