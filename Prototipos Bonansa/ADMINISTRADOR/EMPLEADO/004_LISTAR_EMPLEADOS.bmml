@@ -7,8 +7,8 @@
     </control>
     <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="225" h="386" measuredW="150" measuredH="456" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
-        <selectedIndex>20</selectedIndex>
-        <text>Inicio%0ACliente%0A-%20Registrar%20Cliente%0A-%20Modificar%20Cliente%0A-%20Eliminar%20Cliente%0A-%20Listar%20Clientes%0AEmpleado%0A-%20Registrar%20Empleado%0A-%20Modificar%20Empleado%0A-%20Eliminar%20Empleado%0A-%20Listar%20Empleados%0AVehiculo%0A-%20Registrar%20Vehiculo%0A-%20Modificar%20Vehiculo%0A-%20Eliminar%20Vehiculo%0A-%20Listar%20Vehiculos%0AAfp%0A-%20Registrar%20Afp%0A-%20Modificar%20Afp%0A-%20Eliminar%20Afp%0A-%20Listar%20Afps%0ABanco%0A-%20Registrar%20Banco%0A-%20Modificar%20Banco%0A-%20Eliminar%20Banco%0A-%20Listar%20Bancos%0AGRT%0AGraficos%20estadisticos%0AMapa%0ASeguimiento%20de%20vehiculo</text>
+        <selectedIndex>10</selectedIndex>
+        <text>Inicio%0ACliente%0A-%20Registrar%20Cliente%0A-%20Modificar%20Cliente%0A-%20Eliminar%20Cliente%0A-%20Listar%20Clientes%0AEmpleado%0A-%20Registrar%20Empleado%0A-%20Modificar%20Empleado%0A-%20Eliminar%20Empleado%0A-%20Listar%20Empleados%0AVehiculos%0AAfp%0ABancos%0AGRT%0AGraficos%20estadisticos%0AMapa%0ASeguimiento%20de%20vehiculo</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>
@@ -61,33 +61,34 @@
         <align>left</align>
         <color>65535</color>
         <size>20</size>
-        <text>Listar%20Afps</text>
+        <text>Listar%20Empleados</text>
       </controlProperties>
     </control>
-    <control controlID="74" controlTypeID="com.balsamiq.mockups::FieldSet" x="338" y="306" w="1460" h="748" measuredW="200" measuredH="170" zOrder="16" locked="false" isInGroup="-1">
+    <control controlID="74" controlTypeID="com.balsamiq.mockups::FieldSet" x="338" y="302" w="1457" h="754" measuredW="200" measuredH="170" zOrder="16" locked="false" isInGroup="-1">
       <controlProperties>
         <color>16776960</color>
-        <text>Listado%20General%20de%20Afp</text>
+        <text>Listado%20General%20de%20Empleado</text>
       </controlProperties>
     </control>
-    <control controlID="81" controlTypeID="com.balsamiq.mockups::DataGrid" x="680" y="378" w="777" h="573" measuredW="97" measuredH="23" zOrder="17" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Codigo%2C%20AFP</text>
-      </controlProperties>
-    </control>
-    <control controlID="82" controlTypeID="com.balsamiq.mockups::SearchBox" x="1642" y="331" w="-1" h="-1" measuredW="120" measuredH="25" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="137" controlTypeID="com.balsamiq.mockups::SearchBox" x="1663" y="325" w="-1" h="-1" measuredW="120" measuredH="25" zOrder="17" locked="false" isInGroup="-1">
       <controlProperties>
         <text/>
       </controlProperties>
     </control>
-    <control controlID="83" controlTypeID="com.balsamiq.mockups::Label" x="1546" y="333" w="-1" h="-1" measuredW="64" measuredH="21" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="138" controlTypeID="com.balsamiq.mockups::Label" x="1575" y="328" w="88" h="26" measuredW="71" measuredH="26" zOrder="18" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>BUSCAR%3A%20</text>
+        <size>18</size>
+        <text>Buscar%3A%20</text>
       </controlProperties>
     </control>
-    <control controlID="84" controlTypeID="com.balsamiq.mockups::ButtonBar" x="918" y="966" w="-1" h="-1" measuredW="301" measuredH="29" zOrder="20" locked="false" isInGroup="-1">
+    <control controlID="139" controlTypeID="com.balsamiq.mockups::DataGrid" x="352" y="370" w="1431" h="577" measuredW="481" measuredH="23" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Primero%2C%20Antes%2C1%2C2%2C3%2CFinal</text>
+        <text>Foto%2C%20Codigo%2C%20Nombre%20Completo%2C%20DNI%2C%20Distrito%2C%20Domicilio%2C%20N%B0%20Licencia%2C</text>
+      </controlProperties>
+    </control>
+    <control controlID="141" controlTypeID="com.balsamiq.mockups::ButtonBar" x="1426" y="969" w="-1" h="-1" measuredW="357" measuredH="29" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Primero%2C%20Antes%2C1%2C2%2C3%2CNext%2C%20Last</text>
       </controlProperties>
     </control>
   </controls>
