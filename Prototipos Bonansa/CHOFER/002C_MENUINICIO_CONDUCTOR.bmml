@@ -5,9 +5,9 @@
         <text>BONANSA%20MENU%20PRINCIPAL%0Ahttp%3A//www.Bonansa.com</text>
       </controlProperties>
     </control>
-    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="224" h="211" measuredW="209" measuredH="267" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Accordion" x="58" y="473" w="224" h="166" measuredW="209" measuredH="240" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
-        <selectedIndex>4</selectedIndex>
+        <selectedIndex>0</selectedIndex>
         <text>Inicio%0AOrden%20de%20recojo%0AIncidencia%0AGuia%20de%20Remision%20del%20Transportista%0A-%20Registrar%20GRT%0AMapa%0ASalir</text>
         <value>0</value>
         <verticalScrollbar>true</verticalScrollbar>
@@ -56,73 +56,41 @@
         <text>Salir</text>
       </controlProperties>
     </control>
-    <control controlID="43" controlTypeID="com.balsamiq.mockups::TextArea" x="338" y="254" w="1460" h="41" measuredW="200" measuredH="140" zOrder="15" locked="false" isInGroup="-1">
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::Label" x="332" y="251" w="256" h="37" measuredW="92" measuredH="37" zOrder="15" locked="false" isInGroup="-1">
       <controlProperties>
-        <align>left</align>
-        <color>65535</color>
+        <size>28</size>
+        <text>INICIO</text>
+      </controlProperties>
+    </control>
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::TextArea" x="336" y="288" w="1463" h="37" measuredW="200" measuredH="140" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
         <size>20</size>
-        <text>Registrar%20GRT</text>
+        <text>Mensaje%20del%20sistema.......%20Primera%20ves%20que%20ingresa%20al%20sistema</text>
       </controlProperties>
     </control>
-    <control controlID="44" controlTypeID="com.balsamiq.mockups::FieldSet" x="338" y="309" w="1457" h="685" measuredW="200" measuredH="170" zOrder="16" locked="false" isInGroup="-1">
-      <controlProperties>
-        <color>16776960</color>
-        <text>Datos%20Generales%20de%20la%20Guia%20de%20Remision%20del%20Tranportista</text>
-      </controlProperties>
-    </control>
-    <control controlID="45" controlTypeID="com.balsamiq.mockups::Label" x="435" y="371" w="-1" h="-1" measuredW="82" measuredH="22" zOrder="17" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>14</size>
-        <text>Codigo%20GRT</text>
-      </controlProperties>
-    </control>
-    <control controlID="46" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="369" w="158" h="-1" measuredW="155" measuredH="27" zOrder="18" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%3E%3EAUTOGENERADO%3C%3C</text>
-      </controlProperties>
-    </control>
-    <control controlID="47" controlTypeID="com.balsamiq.mockups::Label" x="441" y="404" w="-1" h="-1" measuredW="71" measuredH="22" zOrder="19" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>14</size>
-        <text>Num.%20GRT</text>
-      </controlProperties>
-    </control>
-    <control controlID="48" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="402" w="158" h="-1" measuredW="79" measuredH="27" zOrder="20" locked="false" isInGroup="-1">
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::TextArea" x="336" y="339" w="1460" h="171" measuredW="200" measuredH="140" zOrder="17" locked="false" isInGroup="-1">
       <controlProperties>
         <text/>
       </controlProperties>
     </control>
-    <control controlID="49" controlTypeID="com.balsamiq.mockups::Label" x="366" y="436" w="-1" h="-1" measuredW="154" measuredH="22" zOrder="21" locked="false" isInGroup="-1">
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::MultilineButton" x="853" y="363" w="119" h="109" measuredW="131" measuredH="55" zOrder="18" locked="false" isInGroup="-1">
       <controlProperties>
-        <size>14</size>
-        <text>Fecha%20Inicio%20de%20Traslado</text>
+        <text>Generar%20GRT</text>
       </controlProperties>
     </control>
-    <control controlID="50" controlTypeID="com.balsamiq.mockups::DateChooser" x="535" y="435" w="193" h="-1" measuredW="90" measuredH="25" zOrder="22" locked="false" isInGroup="-1">
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::MultilineButton" x="993" y="363" w="119" h="109" measuredW="249" measuredH="55" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>%20%20/%20%20/%20%20%20%20</text>
+        <text>Listar%20mis%20Ordenes%20de%20Servicio</text>
       </controlProperties>
     </control>
-    <control controlID="51" controlTypeID="com.balsamiq.mockups::Label" x="446" y="473" w="-1" h="-1" measuredW="74" measuredH="22" zOrder="23" locked="false" isInGroup="-1">
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1130" y="363" w="119" h="109" measuredW="179" measuredH="55" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
-        <size>14</size>
-        <text>Num.%20Placa</text>
+        <text>Registrar%20Incidencias</text>
       </controlProperties>
     </control>
-    <control controlID="52" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="471" w="158" h="-1" measuredW="79" measuredH="27" zOrder="24" locked="false" isInGroup="-1">
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::MultilineButton" x="1264" y="363" w="119" h="109" measuredW="103" measuredH="55" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
-        <text/>
-      </controlProperties>
-    </control>
-    <control controlID="53" controlTypeID="com.balsamiq.mockups::Label" x="387" y="510" w="-1" h="-1" measuredW="133" measuredH="22" zOrder="25" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>14</size>
-        <text>Licencia%20de%20Conducir</text>
-      </controlProperties>
-    </control>
-    <control controlID="54" controlTypeID="com.balsamiq.mockups::TextInput" x="535" y="508" w="158" h="-1" measuredW="79" measuredH="27" zOrder="26" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text/>
+        <text>Ver%20mapa</text>
       </controlProperties>
     </control>
   </controls>
