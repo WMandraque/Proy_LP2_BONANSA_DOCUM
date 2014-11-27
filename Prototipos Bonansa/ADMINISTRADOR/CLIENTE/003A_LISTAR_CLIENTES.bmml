@@ -75,5 +75,10 @@
         <text>Primero%2C%20Two%2C%20Three</text>
       </controlProperties>
     </control>
+    <control controlID="78" controlTypeID="com.balsamiq.mockups::DataGrid" x="375" y="378" w="1386" h="426" measuredW="791" measuredH="53" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>idCliente%2C%20Tipo%20de%20cliente%2C%20Nombre%2C%20Apellido%20paterno%2C%20Apellido%20Materno%2C%20Fecha%20de%20Naciminento%2C%20sexo%2C%20fono%2C%20celular%2C%20e-mail%20%0A%20</text>
+      </controlProperties>
+    </control>
   </controls>
 </mockup>
