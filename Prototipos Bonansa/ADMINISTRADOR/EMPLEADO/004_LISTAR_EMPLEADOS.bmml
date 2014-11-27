@@ -81,14 +81,14 @@
         <text>Buscar%3A%20</text>
       </controlProperties>
     </control>
-    <control controlID="139" controlTypeID="com.balsamiq.mockups::DataGrid" x="352" y="370" w="1431" h="577" measuredW="482" measuredH="23" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="139" controlTypeID="com.balsamiq.mockups::DataGrid" x="352" y="370" w="1431" h="577" measuredW="508" measuredH="23" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Foto%2C%20Codigo%2C%20Nombre%20Completo%2C%20DNI%2C%20Distrito%2C%20Domicilio%2C%20N%B0%20Licencia%2C</text>
+        <text>Foto%2C%20Tipo%20de%20Empleado%2C%20Codigo%2C%20Nombre%2C%20Apellido%20paterno%2C%20Apellido%20materno</text>
       </controlProperties>
     </control>
-    <control controlID="141" controlTypeID="com.balsamiq.mockups::ButtonBar" x="1426" y="969" w="-1" h="-1" measuredW="357" measuredH="29" zOrder="20" locked="false" isInGroup="-1">
+    <control controlID="141" controlTypeID="com.balsamiq.mockups::ButtonBar" x="1391" y="984" w="-1" h="-1" measuredW="392" measuredH="29" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Primero%2C%20Antes%2C1%2C2%2C3%2CNext%2C%20Last</text>
+        <text>Primero%2C%20Antes%2C1%2C2%2C3%2CSiguiente%2C%20Ultimo</text>
       </controlProperties>
     </control>
   </controls>

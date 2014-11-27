@@ -70,14 +70,25 @@
         <text>Datos%20Generales</text>
       </controlProperties>
     </control>
-    <control controlID="77" controlTypeID="com.balsamiq.mockups::ButtonBar" x="1605" y="1004" w="-1" h="-1" measuredW="191" measuredH="29" zOrder="17" locked="false" isInGroup="-1">
+    <control controlID="77" controlTypeID="com.balsamiq.mockups::ButtonBar" x="1460" y="993" w="-1" h="-1" measuredW="301" measuredH="29" zOrder="17" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Primero%2C%20Two%2C%20Three</text>
+        <text>Primero%2C%20Antes%2C1%2C%202%2C3%2CFinal</text>
       </controlProperties>
     </control>
-    <control controlID="78" controlTypeID="com.balsamiq.mockups::DataGrid" x="375" y="378" w="1386" h="426" measuredW="791" measuredH="53" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="78" controlTypeID="com.balsamiq.mockups::DataGrid" x="375" y="378" w="1386" h="587" measuredW="791" measuredH="53" zOrder="18" locked="false" isInGroup="-1">
       <controlProperties>
         <text>idCliente%2C%20Tipo%20de%20cliente%2C%20Nombre%2C%20Apellido%20paterno%2C%20Apellido%20Materno%2C%20Fecha%20de%20Naciminento%2C%20sexo%2C%20fono%2C%20celular%2C%20e-mail%20%0A%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="79" controlTypeID="com.balsamiq.mockups::SearchBox" x="1591" y="336" w="167" h="-1" measuredW="120" measuredH="25" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="80" controlTypeID="com.balsamiq.mockups::Label" x="1521" y="342" w="-1" h="-1" measuredW="63" measuredH="24" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>Buscar%3A%20</text>
       </controlProperties>
     </control>
   </controls>
