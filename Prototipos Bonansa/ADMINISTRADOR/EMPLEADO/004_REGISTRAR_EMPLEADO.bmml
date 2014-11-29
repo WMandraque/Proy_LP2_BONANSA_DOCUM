@@ -79,7 +79,7 @@
         <text>SALIR</text>
       </controlProperties>
     </control>
-    <control controlID="74" controlTypeID="com.balsamiq.mockups::FieldSet" x="338" y="309" w="1457" h="685" measuredW="200" measuredH="170" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="74" controlTypeID="com.balsamiq.mockups::FieldSet" x="338" y="310" w="1457" h="684" measuredW="200" measuredH="170" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
         <color>16776960</color>
         <text>Datos%20Generales</text>
