@@ -1,0 +1,22 @@
+#mainnav .nav-list>li {
+margin-bottom: 0;
+border-bottom: 1px solid #c9c9c9;
+position: relative;
+margin-right: 1px;
+display: block;
+}
+
+li {
+margin-bottom: 7px;
+}
+
+* {
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+outline: 0 !important;
+}
+
+body, p {
+font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+}
