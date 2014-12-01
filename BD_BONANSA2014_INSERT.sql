@@ -1,4 +1,4 @@
-use bd_bonansa20142;
+use bd_bonansa2014;
 
 
 INSERT INTO tb_estado_entidades VALUES ('1', 'ACTIVO'), ('0','INACTIVO');
