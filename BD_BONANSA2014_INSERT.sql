@@ -48,6 +48,11 @@ INSERT INTO tb_tipo_empleado(nomCargo) values ('ADMINISTRADOR'), ('REPCECIONISTA
 SELECT*FROM tb_tipo_empleado;
 
 
+INSERT INTO tb_tipo_documento_identificacion (descTipoDoc) VALUES ('DNI');
+INSERT INTO tb_tipo_documento_identificacion (descTipoDoc) VALUES ('RUC');
+SELECT*FROM tb_tipo_documento_identificacion;
+
+
 
 
 INSERT INTO tb_tipoestablecimiento(numSunatTipoEstablec,descTipoEstablec,descWebServiceSunatTipoEstablec) VALUES(NULL,'Sin Asignar','Sin Asignar');
