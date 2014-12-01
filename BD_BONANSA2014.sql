@@ -307,7 +307,7 @@ idGRT INT PRIMARY KEY AUTO_INCREMENT,
 fecInicioTraslado DATE,
 placaVehiculo VARCHAR(30),
 licenciaConducir VARCHAR(30),
-idCliRemitente INT,
+idCliRemitente varchar(10) NOT NULL,
 direcCliRemitente varchar(200) not null,
 nomCliDestinatario varchar(100) not null,
 apepaCliDestinatario varchar(100) not null,
@@ -331,7 +331,7 @@ cantidad INT,
 unidadMedida VARCHAR(30),
 pesoKg DECIMAL(18,6),
 fecMinEntrega DATE,
-fecMaxEntrega DATE
+fecMaxEntrega DATE,
 CONSTRAINT fk_tb_detalle_GRT_tb_GRT  FOREIGN KEY (idGRT) REFERENCES tb_GRT(idGRT),
 CONSTRAINT pk_detalle_GRT PRIMARY KEY(idGRT, numCodGR, numCodFT)
 );
