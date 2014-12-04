@@ -100,32 +100,12 @@ idTipoDocId INT AUTO_INCREMENT primary key,
 descTipoDoc VARCHAR(30) NOT NULL
 );
 
-drop table if exists tb_tipo_documento;
-CREATE TABLE tb_tipo_documento
-(
-idTipoDoc INT AUTO_INCREMENT primary key, 
-descTipoDoc VARCHAR(30) NOT NULL
-);
-
-
-drop table if exists tb_usuarios_sistema;
-CREATE TABLE tb_usuarios_sistema
-(
-idUsuario char(10)PRIMARY KEY,
-idTipoEmpleado int not null,
-usuUsuario VARCHAR(30) not null,
-claveUsuario VARCHAR(30) not null,
-idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_usuarios_sistema_tb_tipo_empleado FOREIGN KEY (idTipoEmpleado) REFERENCES tb_tipo_empleado(idTipoEmpleado),
-CONSTRAINT fk_tb_usuarios_sistema_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado)
-);
-
 
 
 drop table if exists tb_vehiculo;
 CREATE TABLE tb_vehiculo
 (
-idVeh CHAR(10) PRIMARY KEY,
+idVeh CHAR(7) PRIMARY KEY,
 placaVeh VARCHAR(10) NOT NULL,
 idCategoriaVeh INT NOT NULL,
 marcaVeh VARCHAR(15) NOT NULL,
@@ -151,9 +131,10 @@ largoFurgonVeh DECIMAL NOT NULL,
 anchoFurgonVeh DECIMAL NOT NULL,
 alturaFurgonVeh DECIMAL NOT NULL,
 idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_vehiculo_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado)
+CONSTRAINT fk_tb_vehiculo_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado),
+CONSTRAINT fk_tb_vehiculo_tb_categoriavehiculo FOREIGN KEY (idCategoriaVeh) REFERENCES tb_categoriavehiculo(idCategoriaVeh)
 );
-alter table tb_vehiculo ADD FOREIGN KEY (idCategoriaVeh) REFERENCES tb_categoriavehiculo(idCategoriaVeh);
+
 
 
 
@@ -161,26 +142,25 @@ alter table tb_vehiculo ADD FOREIGN KEY (idCategoriaVeh) REFERENCES tb_categoria
 drop table if exists tb_empleado;
 CREATE TABLE tb_empleado
 (
-idEmpleado char(10)not null PRIMARY KEY,
+idEmpleado char(7)not null PRIMARY KEY,
 idTipoEmpleado INT not null,
 idTipoDocId int not null,
 numDocumento char(9),
 nomEmpleado VARCHAR(100) NOT NULL,
-apepatEmpleado VARCHAR(100) NOT NULL,
-apematEmpleado VARCHAR(100) NOT NULL,
+apepaEmpleado VARCHAR(100) NOT NULL,
+apemaEmpleado VARCHAR(100) NOT NULL,
 sexoEmpleado VARCHAR(1) CHECK(sexoEmpleado IN ('M','F')),
 fecnacEmpleado DATE NOT NULL,
 domicilioEmpleado VARCHAR(200) NOT NULL,
 ubigeoEmpleado VARCHAR(6) NOT NULL,
-telefonoEmpleado VARCHAR(9),
+fonoEmpleado VARCHAR(9),
 celularEmpleado VARCHAR(11),
-correoEmpleado VARCHAR(100) NOT NULL,
-codigoSeguroEmpleado VARCHAR(20),
+emailEmpleado VARCHAR(100) NOT NULL,
 idBanco INT NOT NULL,
 numCuentaAhorroEmpleado VARCHAR(30),
 idAFP INT NOT NULL,
 numAFPEmpleado VARCHAR(30),
-nomFotoEmpleado VARCHAR(10),
+fotoEmpleado VARCHAR(10),
 idEstado char(1) DEFAULT 1,
 CONSTRAINT fk_tb_empleado_tb_tipo_empleado                                FOREIGN KEY(idTipoEmpleado) REFERENCES tb_tipo_empleado (idTipoEmpleado),
 CONSTRAINT fk_tb_empleado_tb_tipo_documento_identificacion                FOREIGN KEY(idTipoDocId)    REFERENCES tb_tipo_documento_identificacion (idTipoDocId),
@@ -195,7 +175,7 @@ CONSTRAINT fk_tb_empleado_tb_estado_entidades                             FOREIG
 drop table if exists tb_empleado_conductor;
 CREATE TABLE tb_empleado_conductor
 (
-idEmpleado char(10)not null,
+idEmpleado char(7)not null,
 licenCondEmpleado VARCHAR(9),
 idClaselic INT NOT NULL,
 idCategorialic INT NOT NULL,
@@ -205,17 +185,24 @@ CONSTRAINT fk_tb_empleado_conductor_tb_claselicencia_conductor     FOREIGN KEY(i
 CONSTRAINT fk_tb_empleado_conductor_tb_categorialicencia_conductor FOREIGN KEY(idCategorialic) REFERENCES tb_categorialicencia_conductor(idCategorialic)
 );
 
-
-
-
-
-
-
+drop table if exists tb_usuario;
+CREATE TABLE tb_usuario
+(
+idEmpleado char(7) not null,
+idUsuario VARCHAR(7) not null,
+claveUsuario VARCHAR(30) not null,
+idTipoEmpleado int not null,
+idEstado char(1) DEFAULT 1,
+CONSTRAINT fk_tb_usuario_tb_empleado FOREIGN KEY (idEmpleado) REFERENCES tb_empleado(idEmpleado),
+CONSTRAINT pk_tb_usuario PRIMARY KEY(idEmpleado, idUsuario),
+CONSTRAINT fk_tb_usuario_tb_tipo_empleado FOREIGN KEY (idTipoEmpleado) REFERENCES tb_tipo_empleado(idTipoEmpleado),
+CONSTRAINT fk_tb_usuario_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado)
+);
 -- Cliente padre
 drop table if exists tb_cliente;
 CREATE TABLE tb_cliente
 (
-idCliente varchar(10) primary key,
+idCliente varchar(7) primary key,
 idTipoCliente int not null,
 nomCliente VARCHAR(60),
 apePatCliente VARCHAR(60),
@@ -236,7 +223,7 @@ CONSTRAINT fk_tb_cliente_tb_estado_entidades                                FORE
 drop table if exists tb_cliente_natural;
 CREATE TABLE tb_cliente_natural
 (
-idCliente varchar(10)not null,
+idCliente varchar(7)not null,
 idTipoDocId int not null,
 numDocumento char(9) not null,
 CONSTRAINT fk_tb_cliente_natural_tb_cliente                         FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente),
@@ -250,7 +237,7 @@ CONSTRAINT fk_tb_cliente_natural_tb_tipo_documento_identificacion    FOREIGN KEY
 drop table if exists tb_cliente_juridico;
 CREATE TABLE tb_cliente_juridico
 (
-idCliente varchar(10)not null,
+idCliente varchar(7)not null,
 idTipoDocId int not null,
 rucCliente VARCHAR(11)not null,
 razSocCliente VARCHAR(70)not null,
@@ -268,7 +255,7 @@ drop table if exists tb_direccionescliente;
 CREATE TABLE tb_direccionescliente
 (
 idDirecCliente INT AUTO_INCREMENT PRIMARY KEY,
-idCliente varchar(10) NOT NULL,
+idCliente varchar(7) NOT NULL,
 direcDirecCliente VARCHAR(200) NOT NULL,
 codubigeoDirecCliente VARCHAR(6),
 idTipoEstablec INT NOT NULL,
@@ -281,10 +268,12 @@ drop table if exists tb_ordenRecojo;
 CREATE TABLE tb_ordenRecojo
 (
 idOR INT AUTO_INCREMENT PRIMARY KEY,
-idCliente char(10)not null,
+idCliente char(7)not null,
 idEmpleado char(10)not null,
 idVeh CHAR(10) NOT NULL,
-fechRegistro date not null
+fechRegistro date not null,
+CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente),
+CONSTRAINT fk_tb_ordenRecojo_tb_vehiculo FOREIGN KEY(idVeh) REFERENCES tb_vehiculo(idVeh)
 );
 
 
@@ -307,7 +296,7 @@ idGRT INT PRIMARY KEY AUTO_INCREMENT,
 fecInicioTraslado DATE,
 placaVehiculo VARCHAR(30),
 licenciaConducir VARCHAR(30),
-idCliRemitente varchar(10) NOT NULL,
+idCliRemitente varchar(7) NOT NULL,
 direcCliRemitente varchar(200) not null,
 nomCliDestinatario varchar(100) not null,
 apepaCliDestinatario varchar(100) not null,
