@@ -4,13 +4,21 @@ USE bd_bonansa2014;
 
 
 -- Para eliminar entidades
-drop table if exists tb_estado_entidades;
-CREATE TABLE tb_estado_entidades
+drop table if exists tb_estado;
+CREATE TABLE tb_estado
 (
 idEstado char(1) primary key,
 descEstado VARCHAR(50) NOT NULL
 );
 
+
+
+drop table if exists tb_estadoTrabajo;
+CREATE TABLE tb_estadoTrabajo
+(
+idEstadoTrabajo char(1) primary key,
+descEstado VARCHAR(50) NOT NULL
+);
 
 drop table if exists tb_categoriavehiculo;
 CREATE  TABLE tb_categoriavehiculo
@@ -27,7 +35,7 @@ CREATE TABLE tb_banco
 idBanco INT AUTO_INCREMENT PRIMARY KEY,
 nomBanco VARCHAR(50) NOT NULL,
 idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_banco_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado)
+CONSTRAINT fk_tb_banco_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado(idEstado)
 );
 
 
@@ -38,7 +46,7 @@ CREATE TABLE tb_afp
 idAFP INT AUTO_INCREMENT PRIMARY KEY,
 nomAFP VARCHAR(50) NOT NULL,
 idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_afp_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado)
+CONSTRAINT fk_tb_afp_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado(idEstado)
 );
 
 
@@ -105,8 +113,8 @@ descTipoDoc VARCHAR(30) NOT NULL
 drop table if exists tb_vehiculo;
 CREATE TABLE tb_vehiculo
 (
-idVeh CHAR(7) PRIMARY KEY,
-placaVeh VARCHAR(10) NOT NULL,
+idVeh CHAR(7) NOT NULL,
+placaVeh CHAR(10) NOT NULL,
 idCategoriaVeh INT NOT NULL,
 marcaVeh VARCHAR(15) NOT NULL,
 modeloVeh VARCHAR(15) NOT NULL,
@@ -114,25 +122,21 @@ numAsientosVeh INT NOT NULL,
 numPasajerosVeh INT NOT NULL,
 anhoFabricVeh INT NOT NULL,
 numSerieMotorVeh VARCHAR(20) NOT NULL,
-nomFotoVeh VARCHAR(10),
 largoVeh DECIMAL NOT NULL,
 anchoVeh DECIMAL NOT NULL,
 alturaVeh DECIMAL NOT NULL,
 cargaBrutaVeh DECIMAL NOT NULL,
 cargaUtilVeh DECIMAL NOT NULL,
 cargaNetaVeh DECIMAL NOT NULL,
-numPolizaSOATVeh VARCHAR(15) NOT NULL,
-fecVigenciaInicSOATVeh DATE NOT NULL,
-fecVigenciaFinSOATVeh DATE NOT NULL,
-numPolizaOM1227Veh VARCHAR(15) NOT NULL,
-fecVigenciaInicOM1227Veh DATE NOT NULL,
-fecVigenciaFinOM1227Veh DATE NOT NULL,
 largoFurgonVeh DECIMAL NOT NULL,
 anchoFurgonVeh DECIMAL NOT NULL,
 alturaFurgonVeh DECIMAL NOT NULL,
 idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_vehiculo_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado),
-CONSTRAINT fk_tb_vehiculo_tb_categoriavehiculo FOREIGN KEY (idCategoriaVeh) REFERENCES tb_categoriavehiculo(idCategoriaVeh)
+idEstadoTrabajo char(1) DEFAULT 0,
+CONSTRAINT fk_tb_tb_vehiculo_tb_estadoTrabajo  FOREIGN KEY (idEstadoTrabajo)      REFERENCES tb_estadoTrabajo(idEstadoTrabajo),
+CONSTRAINT fk_tb_vehiculo_tb_estado            FOREIGN KEY (idEstado)             REFERENCES tb_estado(idEstado),
+CONSTRAINT fk_tb_vehiculo_tb_categoriavehiculo FOREIGN KEY (idCategoriaVeh)       REFERENCES tb_categoriavehiculo(idCategoriaVeh),
+CONSTRAINT pk_tb_vehiculo PRIMARY KEY(idVeh,placaVeh)
 );
 
 
@@ -162,11 +166,13 @@ idAFP INT NOT NULL,
 numAFPEmpleado VARCHAR(30),
 fotoEmpleado VARCHAR(10),
 idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_empleado_tb_tipo_empleado                                FOREIGN KEY(idTipoEmpleado) REFERENCES tb_tipo_empleado (idTipoEmpleado),
-CONSTRAINT fk_tb_empleado_tb_tipo_documento_identificacion                FOREIGN KEY(idTipoDocId)    REFERENCES tb_tipo_documento_identificacion (idTipoDocId),
-CONSTRAINT fk_tb_empleado_tb_banco                                        FOREIGN KEY(idBanco)        REFERENCES tb_banco(idBanco),
-CONSTRAINT fk_tb_empleado_tb_afp                                          FOREIGN KEY (idAFP)         REFERENCES tb_afp(idAFP),
-CONSTRAINT fk_tb_empleado_tb_estado_entidades                             FOREIGN KEY (idEstado)      REFERENCES tb_estado_entidades(idEstado)
+idEstadoTrabajo char(1) DEFAULT 0,
+CONSTRAINT fk_tb_empleado_tb_tipo_empleado                           FOREIGN KEY(idTipoEmpleado)   REFERENCES tb_tipo_empleado (idTipoEmpleado),
+CONSTRAINT fk_tb_empleado_tb_tipo_documento_identificacion           FOREIGN KEY(idTipoDocId)      REFERENCES tb_tipo_documento_identificacion (idTipoDocId),
+CONSTRAINT fk_tb_empleado_tb_banco                                   FOREIGN KEY(idBanco)          REFERENCES tb_banco(idBanco),
+CONSTRAINT fk_tb_empleado_tb_afp                                     FOREIGN KEY (idAFP)           REFERENCES tb_afp(idAFP),
+CONSTRAINT fk_tb_empleado_tb_estado                                  FOREIGN KEY (idEstado)        REFERENCES tb_estado(idEstado),
+CONSTRAINT fk_tb_empleado_tb_estadoTrabajo                           FOREIGN KEY (idEstadoTrabajo) REFERENCES tb_estadoTrabajo(idEstadoTrabajo)
 );
 
 
@@ -176,11 +182,11 @@ drop table if exists tb_empleado_conductor;
 CREATE TABLE tb_empleado_conductor
 (
 idEmpleado char(7)not null,
-licenCondEmpleado VARCHAR(9),
+licenCondEmpleado CHAR(9) NOT NULL,
 idClaselic INT NOT NULL,
 idCategorialic INT NOT NULL,
 CONSTRAINT fk_tb_empleado_conductor_tb_empleado                    FOREIGN KEY(idEmpleado)     REFERENCES tb_empleado(idEmpleado),
-CONSTRAINT pk_tb_empleado_conductor PRIMARY KEY (idEmpleado),
+CONSTRAINT pk_tb_empleado_conductor PRIMARY KEY (idEmpleado, licenCondEmpleado),
 CONSTRAINT fk_tb_empleado_conductor_tb_claselicencia_conductor     FOREIGN KEY(idClaselic)     REFERENCES tb_claselicencia_conductor(idClaselic),
 CONSTRAINT fk_tb_empleado_conductor_tb_categorialicencia_conductor FOREIGN KEY(idCategorialic) REFERENCES tb_categorialicencia_conductor(idCategorialic)
 );
@@ -196,7 +202,7 @@ idEstado char(1) DEFAULT 1,
 CONSTRAINT fk_tb_usuario_tb_empleado FOREIGN KEY (idEmpleado) REFERENCES tb_empleado(idEmpleado),
 CONSTRAINT pk_tb_usuario PRIMARY KEY(idEmpleado, idUsuario),
 CONSTRAINT fk_tb_usuario_tb_tipo_empleado FOREIGN KEY (idTipoEmpleado) REFERENCES tb_tipo_empleado(idTipoEmpleado),
-CONSTRAINT fk_tb_usuario_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado_entidades(idEstado)
+CONSTRAINT fk_tb_usuario_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado(idEstado)
 );
 -- Cliente padre
 drop table if exists tb_cliente;
@@ -213,8 +219,8 @@ telefonoCliente VARCHAR(9),
 celularCliente VARCHAR(11),
 correoCliente VARCHAR(60),
 idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_cliente_tb_tipo_cliente     FOREIGN KEY(idTipoCliente)     REFERENCES tb_tipo_cliente(idTipoCliente),
-CONSTRAINT fk_tb_cliente_tb_estado_entidades                                FOREIGN KEY (idEstado)      REFERENCES tb_estado_entidades(idEstado)
+CONSTRAINT fk_tb_cliente_tb_tipo_cliente                FOREIGN KEY(idTipoCliente)     REFERENCES tb_tipo_cliente(idTipoCliente),
+CONSTRAINT fk_tb_cliente_tb_estado_entidades            FOREIGN KEY (idEstado)         REFERENCES tb_estado(idEstado)
 );
 
 
@@ -269,11 +275,29 @@ CREATE TABLE tb_ordenRecojo
 (
 idOR INT AUTO_INCREMENT PRIMARY KEY,
 idCliente char(7)not null,
-idEmpleado char(10)not null,
-idVeh CHAR(10) NOT NULL,
 fechRegistro date not null,
-CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente),
-CONSTRAINT fk_tb_ordenRecojo_tb_vehiculo FOREIGN KEY(idVeh) REFERENCES tb_vehiculo(idVeh)
+CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente)
+);
+
+
+drop table if exists tb_equipoVehicular_OrdenRecojo;
+CREATE TABLE tb_equipoVehicular_OrdenRecojo
+(
+idOR INT NOT NULL,
+idVeh CHAR(10) NOT NULL,
+CONSTRAINT fk_detalle_OrdenRecojo_tb_ordenRecojo FOREIGN KEY(idOR) references tb_OrdenRecojo(idOr),
+CONSTRAINT fk_tb_equipoVehicular_OrdenRecojo_tb_vehiculo FOREIGN KEY(idVeh) REFERENCES tb_vehiculo(idVeh),
+CONSTRAINT pk_tb_equipoVehicular_OrdenRecojo PRIMARY KEY(idOR, idVeh)
+);
+
+drop table if exists tb_equipoPersonal_OrdenRecojo;
+CREATE TABLE tb_equipoPersonal_OrdenRecojo
+(
+idOR INT NOT NULL,
+idEmpleado CHAR(10) NOT NULL,
+CONSTRAINT fk_tb_equipoPersonal_OrdenRecojo_tb_ordenRecojo FOREIGN KEY(idOR) references tb_OrdenRecojo(idOr),
+CONSTRAINT fk_tb_equipoPersonal_OrdenRecojo_tb_empleado    FOREIGN KEY(idEmpleado)     REFERENCES tb_empleado(idEmpleado),
+CONSTRAINT pk_tb_equipoPersonal_OrdenRecojo PRIMARY KEY(idOR, idEmpleado)
 );
 
 
@@ -284,6 +308,8 @@ CREATE TABLE tb_detalle_ordenRecojo
 idOR INT NOT NULL,
 numCodGR VARCHAR(30) NOT NULL,
 numCodFT VARCHAR(30) NOT NULL,
+descripcion varchar(200) NOT NULL,
+CONSTRAINT fk_detalle_OrdenRecojo FOREIGN KEY(idOR) references tb_OrdenRecojo(idOr),
 CONSTRAINT pk_tb_detalle_ordenRecojo PRIMARY KEY(idOR, numCodGR, numCodFT )
 );
 
@@ -294,8 +320,6 @@ CREATE TABLE tb_GRT
 (
 idGRT INT PRIMARY KEY AUTO_INCREMENT,
 fecInicioTraslado DATE,
-placaVehiculo VARCHAR(30),
-licenciaConducir VARCHAR(30),
 idCliRemitente varchar(7) NOT NULL,
 direcCliRemitente varchar(200) not null,
 nomCliDestinatario varchar(100) not null,
@@ -306,6 +330,26 @@ numDocCliDestinatario char(50) not null,
 direcClienteDestinatario varchar(200) not null,
 CONSTRAINT fk_tb_GRT_tb_cliente  FOREIGN KEY (idCliRemitente) REFERENCES tb_cliente(idCliente),
 CONSTRAINT fk_tb_GRT_idTipoDocId FOREIGN KEY (idTipoDocId)    REFERENCES tb_tipo_documento_identificacion(idTipoDocId)
+);
+
+drop table if exists tb_GRT_equipoVehiculo;
+create table tb_GRT_equipoVehiculo
+(
+idGRT INT NOT NULL,
+idVeh CHAR(7) NOT NULL,
+placaVeh CHAR(10) NOT NULL,
+CONSTRAINT fk_tb_GRT_equipoVehiculo_tb_GRT FOREIGN KEY(idGRT)                      REFERENCES tb_GRT(idGRT),
+CONSTRAINT fk_tb_GRT_equipoVehiculo_tb_equipoVehiculo FOREIGN KEY(idVeh,placaVeh)        REFERENCES tb_vehiculo(idVeh,placaVeh)
+);
+
+
+drop table if exists tb_GRT_equipoPersonal;
+create table tb_GRT_equipoPersonal
+(
+idGRT INT NOT NULL,
+idEmpleado CHAR(7) NOT NULL,
+CONSTRAINT fk_tb_GRT_equipoPersonal_tb_GRT FOREIGN KEY(idGRT) REFERENCES tb_GRT(idGRT),
+CONSTRAINT fk_tb_GRT_equipoPersonal_tb_empleado FOREIGN KEY(idEmpleado) REFERENCES tb_empleado(idEmpleado)
 );
 
 
@@ -324,3 +368,17 @@ fecMaxEntrega DATE,
 CONSTRAINT fk_tb_detalle_GRT_tb_GRT  FOREIGN KEY (idGRT) REFERENCES tb_GRT(idGRT),
 CONSTRAINT pk_detalle_GRT PRIMARY KEY(idGRT, numCodGR, numCodFT)
 );
+
+drop table if exists tb_logGeneral;
+CREATE  TABLE tb_logGeneral
+(
+  codigo INT NOT NULL AUTO_INCREMENT ,
+  usuario VARCHAR(45) NOT NULL ,
+  descripcion VARCHAR(100) NOT NULL ,
+  tipo VARCHAR(45) NOT NULL ,
+  fecha DATE NOT NULL ,
+  hora TIME NOT NULL ,
+  PRIMARY KEY (codigo) 
+);
+
+
