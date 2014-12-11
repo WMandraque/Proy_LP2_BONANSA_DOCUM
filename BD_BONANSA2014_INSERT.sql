@@ -1,10 +1,12 @@
 use bd_bonansa2014;
 
 
-INSERT INTO tb_estado_entidades VALUES ('1', 'ACTIVO'), ('0','INACTIVO');
-select*From tb_estado_entidades;
+INSERT INTO tb_estado VALUES ('1', 'ACTIVO'), ('0','INACTIVO');
+select*From tb_estado;
 
 
+INSERT INTO tb_estadoTrabajo VALUES ('1', 'OCUPADO'), ('0','DESOCUPADO');
+Select*from tb_estadoTrabajo;
 
 INSERT INTO tb_banco(nomBanco) VALUES ('Sin Asignar'),('Banco Azteca'),('Banco de Credito del Peru'),('Banco de Comercio'), ('Banco de la Nacion'), 
 ('Banco del Trabajo'),('Banco Falabella'), ('Banco Financiero'), ('BanBif'), ('Banco Ripley'), ('Banco Continental'), 
