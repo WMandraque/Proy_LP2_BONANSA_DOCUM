@@ -195,12 +195,11 @@ drop table if exists tb_usuario;
 CREATE TABLE tb_usuario
 (
 idEmpleado char(7) not null,
-idUsuario VARCHAR(7) not null,
-claveUsuario VARCHAR(30) not null,
+clave VARCHAR(30) not null,
 idTipoEmpleado int not null,
 idEstado char(1) DEFAULT 1,
 CONSTRAINT fk_tb_usuario_tb_empleado FOREIGN KEY (idEmpleado) REFERENCES tb_empleado(idEmpleado),
-CONSTRAINT pk_tb_usuario PRIMARY KEY(idEmpleado, idUsuario),
+CONSTRAINT pk_tb_usuario PRIMARY KEY(idEmpleado),
 CONSTRAINT fk_tb_usuario_tb_tipo_empleado FOREIGN KEY (idTipoEmpleado) REFERENCES tb_tipo_empleado(idTipoEmpleado),
 CONSTRAINT fk_tb_usuario_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado(idEstado)
 );
@@ -275,7 +274,9 @@ CREATE TABLE tb_ordenRecojo
 (
 idOR INT AUTO_INCREMENT PRIMARY KEY,
 idCliente char(7)not null,
-fechRegistro date not null,
+fechaRecojo date not null,
+direccionRecojo varchar(300),
+horaRecojo  date not null, 
 CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente)
 );
 

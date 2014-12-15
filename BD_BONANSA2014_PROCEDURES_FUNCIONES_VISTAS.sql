@@ -1,26 +1,5 @@
 
-use bd_bonansa2014;
-
-DROP FUNCTION if exists CalcularIdUsuario;
-DELIMITER $$
-CREATE FUNCTION CalcularIdUsuario()-- -- Retornara el codigo del cliente convertido
-Returns CHAR(7)
-begin
-	Declare cantidadUsuario  INT;
-	Declare idUsuarioAumentado INTEGER;
-	Declare idUsuarioConvertido Char(7);
-	
-	Set cantidadUsuario=CONCAT((select count(*) from tb_usuario));
-if cantidadUsuario=0 then 
-	set idUsuarioConvertido=CONCAT('USU',1);
-	return idUsuarioConvertido;
-end if;
-	set idUsuarioAumentado=cantidadUsuario+1;
-	set idUsuarioConvertido=CONCAT('USU',idUsuarioAumentado);
-	return idUsuarioConvertido;
-end;
-$$
-Delimiter ;
+USE bd_bonansa2014;
 
 
 DROP FUNCTION if exists CalcularIdEmpleado;
@@ -63,13 +42,53 @@ end if;
 	return idClienteConvertido;
 end;
 $$
+
+Delimiter ;
+DROP PROCEDURE IF EXISTS validarEmpleado;
+DELIMITER $$
+CREATE PROCEDURE validarEmpleado
+(
+ip_idEmpleado char(7), 
+ip_clave varchar(30),
+INOUT op_idEmpleado char(7)
+)
+begin
+      select u.*, e.nomEmpleado, e.apepaEmpleado, e.apemaEmpleado, te.nomCargo from 
+      tb_usuario as u inner join tb_empleado as e
+      on u.idEmpleado=e.idEmpleado
+	  inner join tb_tipo_empleado as te
+      on u.idTipoEmpleado=te.idTipoEmpleado
+      where u.idEmpleado=ip_idEmpleado and u.clave=ip_clave;
+
+	 set op_idEmpleado=concat((SELECT u.idEmpleado FROM tb_usuario as u where u.idEmpleado=ip_idEmpleado and u.clave=ip_clave));
+
+
+END$$
 Delimiter ;
 
-DROP PROCEDURE IF EXISTS validarUsuario;
+
+
+
+DROP PROCEDURE IF EXISTS usp_registrarUsuario;
 DELIMITER $$
-CREATE PROCEDURE validarUsuario(idUsuario char(7), claveUsuario varchar(30))
+CREATE PROCEDURE usp_registrarUsuario
+(
+ip_idEmpleado char(7),
+ip_clave VARCHAR(30),
+ip_idTipoEmpleado int
+)
 begin
-      select*from tb_usuario as u where u.idUsuario=idUsuario and u.claveUsuario=claveUsuario;
+	insert into tb_usuario
+	(
+	idEmpleado,
+	clave,
+	idTipoEmpleado
+	) 
+	values(
+	ip_idEmpleado,
+	ip_clave,
+	ip_idTipoEmpleado
+	);
 END$$
 Delimiter ;
 
@@ -89,82 +108,208 @@ DROP PROCEDURE IF EXISTS usp_registrarEmpleado;
 DELIMITER //
 CREATE PROCEDURE usp_registrarEmpleado
 (
-p_idTipoEmpleado INT,
-p_idTipoDocId int,
-p_numDocumento char(9),
-p_nomEmpleado VARCHAR(100),
-p_apepaEmpleado VARCHAR(100),
-p_apemaEmpleado VARCHAR(100),
-p_sexoEmpleado VARCHAR(1),
-p_fecnacEmpleado DATE,
-p_domicilioEmpleado VARCHAR(200),
-p_ubigeoEmpleado VARCHAR(6),
-p_fonoEmpleado VARCHAR(9),
-p_celularEmpleado VARCHAR(11),
-p_emailEmpleado VARCHAR(100),
-p_idBanco INT,
-p_numCuentaAhorroEmpleado VARCHAR(30),
-p_idAFP INT,
-p_numAFPEmpleado VARCHAR(30),
-p_fotoEmpleado VARCHAR(10),
+ip_idTipoEmpleado int,
+ip_idTipoDocId int,
+ip_numDocumento char(9),
+ip_nomEmpleado VARCHAR(100),
+ip_apepaEmpleado VARCHAR(100),
+ip_apemaEmpleado VARCHAR(100),
+ip_sexoEmpleado  CHAR(1),
+ip_fecnacEmpleado DATE,
+ip_domicilioEmpleado VARCHAR(200),
+ip_ubigeoEmpleado VARCHAR(6),
+ip_fonoEmpleado VARCHAR(9),
+ip_celularEmpleado VARCHAR(11),
+ip_emailEmpleado VARCHAR(100),
+ip_idBanco INT,
+ip_numCuentaAhorroEmpleado VARCHAR(30),
+ip_idAFP INT,
+ip_numAFPEmpleado VARCHAR(30),
+ip_fotoEmpleado VARCHAR(10),
 
--- Usuario quien registra
-p_Usuario varchar(10)
+-- Empleado quien lo registra
+ip_idEmpleado char(7)
 )
 BEGIN
+		Declare idEmpleadoAutogenerado Char(10);
+		SET     idEmpleadoAutogenerado=CalcularIdEmpleado();
 
-
-Declare idEmpleadoAutogenerado Char(10);
-SET     idEmpleadoAutogenerado=CalcularIdEmpleado();
-
-
-INSERT INTO tb_empleado
-(
-idEmpleado,
-idTipoEmpleado, 
-idTipoDocId, 
-numDocumento, 
-nomEmpleado, 
-apepaEmpleado, 
-apemaEmpleado,
-sexoEmpleado, 
-fecnacEmpleado, 
-domicilioEmpleado, 
-ubigeoEmpleado, 
-fonoEmpleado, 
-celularEmpleado, 
-emailEmpleado, 
-idBanco, 
-numCuentaAhorroEmpleado, 
-idAFP, 
-numAFPEmpleado, 
-fotoEmpleado
-)
-VALUES 
-(
-idEmpleadoAutogenerado, 
-p_idTipoEmpleado,
-p_idTipoDocId,
-p_numDocumento,
-p_nomEmpleado,
-p_apepaEmpleado,
-p_apemaEmpleado,
-p_sexoEmpleado,
-p_fecnacEmpleado,
-p_domicilioEmpleado,
-p_ubigeoEmpleado,
-p_fonoEmpleado,
-p_celularEmpleado,
-p_emailEmpleado,
-p_idBanco,
-p_numCuentaAhorroEmpleado,
-p_idAFP,
-p_numAFPEmpleado,
-p_fotoEmpleado
-);
-insert into tb_logGeneral(usuario, descripcion, tipo, fecha, hora) values(p_Usuario, CONCAT("Empleado registrado: ",idEmpleadoAutogenerado), "INSERT", curdate(), curtime());
+	START transaction;
+		INSERT INTO tb_empleado
+		(
+		idEmpleado,
+		idTipoEmpleado, 
+		idTipoDocId, 
+		numDocumento, 
+		nomEmpleado, 
+		apepaEmpleado, 
+		apemaEmpleado,
+		sexoEmpleado, 
+		fecnacEmpleado, 
+		domicilioEmpleado, 
+		ubigeoEmpleado, 
+		fonoEmpleado, 
+		celularEmpleado, 
+		emailEmpleado, 
+		idBanco, 
+		numCuentaAhorroEmpleado, 
+		idAFP, 
+		numAFPEmpleado, 
+		fotoEmpleado
+		)
+		VALUES 
+		(
+		idEmpleadoAutogenerado, 
+		ip_idTipoEmpleado,
+		ip_idTipoDocId,
+		ip_numDocumento,
+		ip_nomEmpleado,
+		ip_apepaEmpleado,
+		ip_apemaEmpleado,
+		ip_sexoEmpleado,
+		ip_fecnacEmpleado,
+		ip_domicilioEmpleado,
+		ip_ubigeoEmpleado,
+		ip_fonoEmpleado,
+		ip_celularEmpleado,
+		ip_emailEmpleado,
+		ip_idBanco,
+		ip_numCuentaAhorroEmpleado,
+		ip_idAFP,
+		ip_numAFPEmpleado,
+		ip_fotoEmpleado
+		);
+		call registrarLog(ip_idEmpleado, CONCAT("Empleado registrado: ",idEmpleadoAutogenerado), "INSERT");
+	COMMIT;
 END //
 Delimiter ;
+
+
+DROP PROCEDURE IF EXISTS usp_registrarEmpleadoConductor;
+DELIMITER //
+CREATE PROCEDURE usp_registrarEmpleadoConductor
+(
+ip_idTipoEmpleado int,
+ip_idTipoDocId int,
+ip_numDocumento char(9),
+ip_nomEmpleado VARCHAR(100),
+ip_apepaEmpleado VARCHAR(100),
+ip_apemaEmpleado VARCHAR(100),
+ip_sexoEmpleado  CHAR(1),
+ip_fecnacEmpleado DATE,
+ip_domicilioEmpleado VARCHAR(200),
+ip_ubigeoEmpleado VARCHAR(6),
+ip_fonoEmpleado VARCHAR(9),
+ip_celularEmpleado VARCHAR(11),
+ip_emailEmpleado VARCHAR(100),
+ip_idBanco int,
+ip_numCuentaAhorroEmpleado VARCHAR(30),
+ip_idAFP int,
+ip_numAFPEmpleado VARCHAR(30),
+ip_fotoEmpleado VARCHAR(10),
+
+-- parametros de empleado chofer
+ip_licenCondEmpleado CHAR(9),
+ip_idClaselic int,
+ip_idCategorialic int,
+
+-- Empleado quien lo registra
+ip_idEmpleado char(7)
+)
+BEGIN
+		Declare idEmpleadoAutogenerado Char(7);
+		SET     idEmpleadoAutogenerado=CalcularIdEmpleado();
+
+	START transaction;
+		INSERT INTO tb_empleado
+		(
+		idEmpleado,
+		idTipoEmpleado, 
+		idTipoDocId, 
+		numDocumento, 
+		nomEmpleado, 
+		apepaEmpleado, 
+		apemaEmpleado,
+		sexoEmpleado, 
+		fecnacEmpleado, 
+		domicilioEmpleado, 
+		ubigeoEmpleado, 
+		fonoEmpleado, 
+		celularEmpleado, 
+		emailEmpleado, 
+		idBanco, 
+		numCuentaAhorroEmpleado, 
+		idAFP, 
+		numAFPEmpleado, 
+		fotoEmpleado
+		)
+		VALUES 
+		(
+		idEmpleadoAutogenerado, 
+		ip_idTipoEmpleado,
+		ip_idTipoDocId,
+		ip_numDocumento,
+		ip_nomEmpleado,
+		ip_apepaEmpleado,
+		ip_apemaEmpleado,
+		ip_sexoEmpleado,
+		ip_fecnacEmpleado,
+		ip_domicilioEmpleado,
+		ip_ubigeoEmpleado,
+		ip_fonoEmpleado,
+		ip_celularEmpleado,
+		ip_emailEmpleado,
+		ip_idBanco,
+		ip_numCuentaAhorroEmpleado,
+		ip_idAFP,
+		ip_numAFPEmpleado,
+		ip_fotoEmpleado
+		);
+		INSERT INTO tb_empleado_conductor
+		(
+		idEmpleado,
+		licenCondEmpleado,
+		idClaselic,
+		idCategorialic
+		)
+		VALUES 
+		(
+		idEmpleadoAutogenerado,
+		ip_licenCondEmpleado,
+		ip_idClaselic,
+		ip_idCategorialic
+		);
+		CALL registrarLog(ip_idEmpleado, CONCAT("Empleado registrado: ",idEmpleadoAutogenerado), "INSERT");
+	COMMIT;
+END //
+Delimiter ;
+
+
+
+select*from tb_empleado;
+call usp_registrarEmpleado 
+( 
+'1', 
+'1', 
+'47084553', 
+'Carlos', 
+'Bonilla', 
+'Heliz', 
+'H', 
+'1980/07/08', 
+'Imperial 325', 
+'1231', 
+'6788767', 
+'99887865679', 
+'bonilla@bonansa.com', 
+'1', 
+'123456789012345678901234567890', 
+'1', 
+'123456789012345678901234567890',
+null,
+'EMP1'
+);
+
 
 
 call usp_registrarEmpleado 
@@ -172,16 +317,16 @@ call usp_registrarEmpleado
 '2', 
 '1', 
 '47084553', 
-'Abuelita', 
-'changarro', 
+'Tarja', 
+'Paraguay', 
 'Barzola', 
-'H', 
+'M', 
 '1980/07/08', 
 'Imperial 325', 
 '1231', 
 '6788767', 
 '99887865679', 
-'sebastian@bonansa.com', 
+'tarja@bonansa.com', 
 '1', 
 '123456789012345678901234567890', 
 '1', 
@@ -190,7 +335,63 @@ null,
 'USUO1'
 );
 
-select*from tb_empleado;
+call usp_registrarEmpleadoConductor 
+( 
+'3', 
+'1', 
+'47084553', 
+'Reynaldo', 
+'Palomino', 
+'Lazo', 
+'H', 
+'1980/07/08', 
+'Imperial 325', 
+'1231', 
+'6788767', 
+'99887865679', 
+'reynaldo@bonansa.com', 
+'1', 
+'123456789012345678901234567890', 
+'1', 
+'123456789012345678901234567890',
+null,
+'123456789',
+1,
+1,
+'EMP1'
+);
+
+
+
+call usp_registrarEmpleado 
+( 
+'4', 
+'1', 
+'47084553', 
+'Ricardo', 
+'Lazo', 
+'Lazo', 
+'H', 
+'1980/07/08', 
+'Imperial 325', 
+'1231', 
+'6788767', 
+'99887865679', 
+'ricardo@bonansa.com', 
+'1', 
+'123456789012345678901234567890', 
+'1', 
+'123456789012345678901234567890',
+null,
+'USUO'
+);
+
+select*from tb_empleado as e inner join tb_tipo_Empleado as te
+on e.idtipoEmpleado=te.idtipoEmpleado;
+
+
+select*from tb_empleado_conductor;
+
 select*from tb_logGeneral;
 
 
@@ -221,57 +422,57 @@ p_numAFPEmpleado VARCHAR(30),
 p_fotoEmpleado VARCHAR(10),
 
 -- Usuario quien registra
-p_Usuario varchar(10)
+ip_idEmpleadoR char(7)
 )
 BEGIN
-
-UPDATE tb_empleado set
-
-idTipoEmpleado=p_idTipoEmpleado, 
-idTipoDocId=p_idTipoDocId, 
-numDocumento=p_numDocumento, 
-nomEmpleado=p_nomEmpleado, 
-apepaEmpleado=p_apepaEmpleado, 
-apemaEmpleado=p_apemaEmpleado,
-sexoEmpleado=p_sexoEmpleado, 
-fecnacEmpleado=p_fecnacEmpleado, 
-domicilioEmpleado=p_domicilioEmpleado, 
-ubigeoEmpleado=p_ubigeoEmpleado, 
-fonoEmpleado=p_fonoEmpleado, 
-celularEmpleado=p_celularEmpleado, 
-emailEmpleado=p_emailEmpleado, 
-idBanco=p_idBanco, 
-numCuentaAhorroEmpleado=p_numCuentaAhorroEmpleado, 
-idAFP=p_idAFP, 
-numAFPEmpleado=p_numAFPEmpleado, 
-fotoEmpleado=p_fotoEmpleado
-where idEmpleado=p_idEmpleado;
-insert into tb_logGeneral(usuario, descripcion, tipo, fecha, hora) values(p_Usuario, CONCAT("Empleado actualizado: ",p_idEmpleado), "UPDATE", curdate(), curtime());
+	START transaction;
+		UPDATE tb_empleado set
+		idTipoEmpleado=p_idTipoEmpleado, 
+		idTipoDocId=p_idTipoDocId, 
+		numDocumento=p_numDocumento, 
+		nomEmpleado=p_nomEmpleado, 
+		apepaEmpleado=p_apepaEmpleado, 
+		apemaEmpleado=p_apemaEmpleado,
+		sexoEmpleado=p_sexoEmpleado, 
+		fecnacEmpleado=p_fecnacEmpleado, 
+		domicilioEmpleado=p_domicilioEmpleado, 
+		ubigeoEmpleado=p_ubigeoEmpleado, 
+		fonoEmpleado=p_fonoEmpleado, 
+		celularEmpleado=p_celularEmpleado, 
+		emailEmpleado=p_emailEmpleado, 
+		idBanco=p_idBanco, 
+		numCuentaAhorroEmpleado=p_numCuentaAhorroEmpleado, 
+		idAFP=p_idAFP, 
+		numAFPEmpleado=p_numAFPEmpleado, 
+		fotoEmpleado=p_fotoEmpleado
+		where idEmpleado=p_idEmpleado;
+		CALL registrarLog(ip_idEmpleadoR, CONCAT("Empleado actualizado: ",p_idEmpleado), "UPDATE");
+	COMMIT;
 END //
 Delimiter ;
 
 call usp_actualizarEmpleado 
 ( 
-'EMP17',
-'2', 
+'EMP3',
+'4', 
 '1', 
 '47084553', 
-'NILO', 
-'changarro', 
-'Barzola', 
+'Ricarso', 
+'Maziel', 
+'Lazo', 
 'H', 
 '1980/07/08', 
 'Imperial 325', 
 '1231', 
 '6788767', 
 '99887865679', 
-'sebastian@bonansa.com', 
+'ricardo@bonansa.com', 
 '1', 
 '123456789012345678901234567890', 
 '1', 
 '123456789012345678901234567890',
 null,
-'USUO1'
+'EMP1'
 );
 
 select*from tb_empleado;
@@ -283,74 +484,185 @@ DROP PROCEDURE IF EXISTS usp_eliminarEmpleado;
 DELIMITER //
 CREATE PROCEDURE usp_eliminarEmpleado
 (
-p_idEmpleado char(10),
+ip_idEmpleado char(7),
 -- Usuario quien registra
-p_Usuario varchar(10)
+ip_idEmpleadoR char(7)
 )
 BEGIN
-UPDATE tb_empleado set idEstado=0
-where idEmpleado=p_idEmpleado;
-insert into tb_logGeneral(usuario, descripcion, tipo, fecha, hora) values(p_Usuario, CONCAT("Empleado eliminado: ",p_idEmpleado), "DELETE", curdate(), curtime());
+	START transaction;
+		UPDATE tb_empleado set idEstado=0
+		  where idEmpleado=ip_idEmpleado;
+		CALL registrarLog(ip_idEmpleadoR, CONCAT("Empleado eliminado: ",ip_idEmpleado), "DELETE");
+	COMMIT;
 END //
 Delimiter ;
 
 
-call usp_eliminarEmpleado('XX', 'USU01');
+call usp_eliminarEmpleado('EMP3', 'EMP1');
 
 select*from tb_empleado;
 select*from tb_logGeneral;
 
 
-DROP PROCEDURE IF EXISTS usp_registrarCliente;
+DROP PROCEDURE IF EXISTS usp_registrarClienteJuridico;
 DELIMITER //
-CREATE PROCEDURE usp_registrarCliente
+CREATE PROCEDURE usp_registrarClienteJuridico
 (
-p_idTipoCliente INT,
-p_nomCliente VARCHAR(60),
-p_apePatCliente VARCHAR(60),
-p_apeMatCliente VARCHAR(60),
-p_fecNacCliente DATE,
-p_sexoCliente VARCHAR(1),
-p_telefonoCliente VARCHAR(9),
-p_celularCliente VARCHAR(11),
-p_correoCliente VARCHAR(60),
 
-p_usuario varchar(7)
+-- parametros para el cliente
+ip_idTipoCliente INT,
+ip_nomCliente VARCHAR(60),
+ip_apePatCliente VARCHAR(60),
+ip_apeMatCliente VARCHAR(60),
+ip_fecNacCliente DATE,
+ip_sexoCliente VARCHAR(1),
+ip_telefonoCliente VARCHAR(9),
+ip_celularCliente VARCHAR(11),
+ip_correoCliente VARCHAR(60),
+
+-- parametros para el cliente juridico
+ip_idTipoDocId int,
+ip_rucCliente VARCHAR(11),
+ip_razSocCliente VARCHAR(70),
+ip_ciiuCliente VARCHAR(5),
+ip_cargoContacCliente VARCHAR(50),
+
+-- empleado quien registra
+ip_idEmpleadoR char(7),
+
+-- parametro de salida
+INOUT op_idCliente char(7)
 )
 begin
-   declare idClienteAuto char(10);
-   set     idClienteAuto=CalcularIdCliente();
-insert into tb_cliente
-(
-idCliente,
-idTipoCliente,
-nomCliente,
-apePatCliente,
-apeMatCliente,
-fecNacCliente ,
-sexoCliente,
-telefonoCliente,
-celularCliente,
-correoCliente
-)
-value(
-CalcularIdCliente(),
-p_idTipoCliente,
-p_nomCliente,
-p_apePatCliente,
-p_apeMatCliente,
-p_fecNacCliente,
-p_sexoCliente,
-p_telefonoCliente,
-p_celularCliente,
-p_correoCliente
-);
-insert into tb_logGeneral(usuario, descripcion, tipo, fecha, hora) values(p_Usuario, CONCAT("Cliente registrado: ",idClienteAuto), "INSERT", curdate(), curtime());
+		declare idClienteAuto char(7);
+		set     idClienteAuto=CalcularIdCliente();
+	START TRANSACTION;
+		insert into tb_cliente
+		(
+		idCliente,
+		idTipoCliente,
+		nomCliente,
+		apePatCliente,
+		apeMatCliente,
+		fecNacCliente ,
+		sexoCliente,
+		telefonoCliente,
+		celularCliente,
+		correoCliente
+		)
+		value(
+		idClienteAuto,
+		ip_idTipoCliente,
+		ip_nomCliente,
+		ip_apePatCliente,
+		ip_apeMatCliente,
+		ip_fecNacCliente,
+		ip_sexoCliente,
+		ip_telefonoCliente,
+		ip_celularCliente,
+		ip_correoCliente
+		);
+		insert into tb_cliente_juridico
+		(
+		idCliente,
+		idTipoDocId,
+		rucCliente,
+		razSocCliente,
+		ciiuCliente,
+		cargoContacCliente
+		)
+		values (
+		idClienteAuto,
+		ip_idTipoDocId,
+		ip_rucCliente,
+		ip_razSocCliente,
+		ip_ciiuCliente,
+		ip_cargoContacCliente
+		);
+        set op_idCliente=concat(idClienteAuto);
+		CALL registrarLog(ip_idEmpleadoR, CONCAT("Cliente registrado: ",idClienteAuto), "INSERT");
+	commit;
 END //
 Delimiter ;
 
 
-call usp_registrarCliente
+DROP PROCEDURE IF EXISTS usp_registrarClienteNatural;
+DELIMITER //
+CREATE PROCEDURE usp_registrarClienteNatural
+(
+-- parametros del cliente
+ip_idTipoCliente INT,
+ip_nomCliente VARCHAR(60),
+ip_apePatCliente VARCHAR(60),
+ip_apeMatCliente VARCHAR(60),
+ip_fecNacCliente DATE,
+ip_sexoCliente VARCHAR(1),
+ip_telefonoCliente VARCHAR(9),
+ip_celularCliente VARCHAR(11),
+ip_correoCliente VARCHAR(60),
+
+-- parametros del cliente natural
+ip_idTipoDocId int,
+ip_numDocumento char(9),
+
+-- empleado quien registra
+ip_idEmpleadoR varchar(7),
+
+-- paramtro de salida
+inout op_idCliente char(7)
+)
+begin
+		 -- variable que almacena el id autogenerado
+		   declare idClienteAuto char(7);
+		   set     idClienteAuto=CalcularIdCliente();
+
+	START TRANSACTION;
+		insert into tb_cliente
+		(
+		idCliente,
+		idTipoCliente,
+		nomCliente,
+		apePatCliente,
+		apeMatCliente,
+		fecNacCliente ,
+		sexoCliente,
+		telefonoCliente,
+		celularCliente,
+		correoCliente
+		)
+		value(
+		idClienteAuto,
+		ip_idTipoCliente,
+		ip_nomCliente,
+		ip_apePatCliente,
+		ip_apeMatCliente,
+		ip_fecNacCliente,
+		ip_sexoCliente,
+		ip_telefonoCliente,
+		ip_celularCliente,
+		ip_correoCliente
+		);
+		insert into tb_cliente_Natural
+		(
+		idCliente,
+		idTipoDocId,
+		numDocumento
+		)
+		values (
+		idClienteAuto,
+		ip_idTipoDocId,
+		ip_numDocumento
+		);
+         
+		-- establecemos valor al parametro de salida
+		set  op_idCliente=CONCAT(idClienteAuto);
+		CALL registrarLog(ip_idEmpleadoR, CONCAT("Cliente registrado: ",idClienteAuto), "INSERT");
+	commit;
+END //
+Delimiter ;
+
+
+call usp_registrarClienteJuridico
 (
 '1',
 'Marco',
@@ -361,9 +673,55 @@ call usp_registrarCliente
 '1234567',
 '123456789',
 'luis@gmail.com',
-'USU09'
+
+'1',
+'12345678900',
+'Razon social',
+'12345',
+'UI',
+'EMP1',
+@salida
 );
 
-select*from tb_cliente;
-select*from tb_logGeneral;
+delimiter ; 
+call usp_registrarClienteNatural
+(
+'2',
+'Marco',
+'Garcia',
+'Altamirano',
+'1990-12-12',
+'M',
+'1234567',
+'123456789',
+'luis@gmail.com',
+
+'1',
+'123456789',
+
+
+'USU09',
+@salida
+);
+select @salida;
+
+select*from tb_cliente as c inner join tb_tipo_cliente as tc
+on c.idTipoCliente=tc.idtipoCliente;
+select*from tb_cliente_juridico;
+select*from tb_cliente_natural;
+select*from tb_logGeneral as lg;
+
+
+
+
+call usp_registrarUsuario('EMP1', '123', 1);
+call usp_registrarUsuario('EMP2', '123', 2);
+call usp_registrarUsuario('EMP3', '123', 3);
+select*from tb_usuario;
+
+call validarEmpleado('EMP1', '12s3', @salida);
+select @salida;
+
+
+
 
