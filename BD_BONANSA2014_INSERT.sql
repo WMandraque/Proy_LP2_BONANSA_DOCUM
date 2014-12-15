@@ -8,16 +8,7 @@ select*From tb_estado;
 INSERT INTO tb_estadoTrabajo VALUES ('1', 'OCUPADO'), ('0','DESOCUPADO');
 Select*from tb_estadoTrabajo;
 
-INSERT INTO tb_banco(nomBanco) VALUES ('Sin Asignar'),('Banco Azteca'),('Banco de Credito del Peru'),('Banco de Comercio'), ('Banco de la Nacion'), 
-('Banco del Trabajo'),('Banco Falabella'), ('Banco Financiero'), ('BanBif'), ('Banco Ripley'), ('Banco Continental'), 
-('Citibank'), ('HSBC'), ('Interbank'), ('ICBC'), ('MiBanco'), ('Scotiabank');
-SELECT * FROM tb_banco;
 
-
-
-
-INSERT INTO tb_afp(nomAFP) VALUES ('Sin Asignar'),('AFP Integra'),('AFP Prima'),('AFP Profuturo'),('AFP Habitat'),('AFP Horizonte'),('ONP');
-SELECT * FROM tb_afp;
 
 
 INSERT INTO tb_categorialicencia_conductor VALUES (NULL,'Sin Asignar');

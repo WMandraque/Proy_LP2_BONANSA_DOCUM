@@ -42,8 +42,37 @@ end if;
 	return idClienteConvertido;
 end;
 $$
-
 Delimiter ;
+
+DROP FUNCTION if exists CalcularIdVehiculo;
+DELIMITER $$
+CREATE FUNCTION CalcularIdVehiculo()-- Retornara el codigo del empleado convertido
+Returns CHAR(7)
+begin
+	Declare cantidadVehiculo  INT;
+	Declare idVehiculoAumentado INTEGER;
+	Declare idVehiculoConvertido Char(7);
+	
+	Set cantidadVehiculo=CONCAT((select count(*) from tb_vehiculo));
+if cantidadVehiculo=0 then
+	set idVehiculoConvertido=CONCAT('VEH',1);
+	return idVehiculoConvertido;
+end if;
+	set idVehiculoAumentado=cantidadVehiculo+1;
+	set idVehiculoConvertido=CONCAT('VEH', idVehiculoAumentado);
+	return idVehiculoConvertido;
+end;
+$$
+Delimiter ;
+
+DROP PROCEDURE IF EXISTS registrarLog;
+DELIMITER //
+CREATE PROCEDURE registrarLog( usuario VARCHAR(10), descripcion VARCHAR(100), tipo VARCHAR(45))
+begin
+      insert into tb_logGeneral(usuario, descripcion, tipo, fecha, hora) values(usuario, descripcion, tipo, curdate(), curtime());
+END //
+Delimiter ;
+
 DROP PROCEDURE IF EXISTS validarEmpleado;
 DELIMITER $$
 CREATE PROCEDURE validarEmpleado
@@ -66,6 +95,139 @@ begin
 END$$
 Delimiter ;
 
+
+
+-- SP Para reistrar vehiculo
+DROP PROCEDURE IF EXISTS usp_registrarVehiculo;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarVehiculo
+(
+ip_placaVeh CHAR(20),
+ip_idCategoriaVeh INT,
+ip_marcaVeh VARCHAR(15),
+ip_modeloVeh VARCHAR(15),
+ip_numAsientosVeh INT,
+ip_numPasajerosVeh INT,
+ip_anhoFabricVeh INT,
+ip_numSerieMotorVeh VARCHAR(20),
+ip_largoVeh DECIMAL(6,2),
+ip_anchoVeh DECIMAL(6,2),
+ip_alturaVeh DECIMAL(6,2),
+ip_cargaBrutaVeh DECIMAL(6,2),
+ip_cargaUtilVeh DECIMAL(6,2),
+ip_cargaNetaVeh DECIMAL(6,2),
+
+-- empleado quien registra
+ip_idEmpleado char(7)
+)
+begin
+    
+	declare idVehiculoAuto char(7);
+    set     idVehiculoAuto=CalcularIdVehiculo();
+    SET AUTOCOMMIT=0;
+    START TRANSACTION;
+		insert into tb_vehiculo
+		(
+		idVeh,
+		placaVeh,
+		idCategoriaVeh,
+		marcaVeh,
+		modeloVeh,
+		numAsientosVeh,
+		numPasajerosVeh,
+		anhoFabricVeh,
+		numSerieMotorVeh,
+		largoVeh,
+		anchoVeh,
+		alturaVeh,
+		cargaBrutaVeh,
+		cargaUtilVeh,
+		cargaNetaVeh
+		) 
+		values
+		(
+		idVehiculoAuto,
+		ip_placaVeh,
+		ip_idCategoriaVeh,
+		ip_marcaVeh,
+		ip_modeloVeh,
+		ip_numAsientosVeh,
+		ip_numPasajerosVeh,
+		ip_anhoFabricVeh,
+		ip_numSerieMotorVeh,
+		ip_largoVeh,
+		ip_anchoVeh,
+		ip_alturaVeh,
+		ip_cargaBrutaVeh,
+		ip_cargaUtilVeh,
+		ip_cargaNetaVeh
+		);
+		call registrarLog(ip_idEmpleado, CONCAT("Vehiculo registrado: ",idVehiculoAuto), "INSERT");
+    commit;
+END$$
+Delimiter ;
+
+
+
+CALL usp_registrarVehiculo
+(
+'PERU-B1L-949',
+1,
+'Hyundai',
+'H100',
+2,
+2,
+2005,
+'13425684',
+7,
+2.30,
+3.48,
+3510,
+1645,
+1865,
+'EMP1'
+);
+
+CALL usp_registrarVehiculo
+(
+'PERU-F6P-757',
+1,
+'Jmc',
+'Carryng CWB',
+2,
+2,
+2007,
+'65678965',
+5.20,
+1.85,
+2.95,
+3500,
+1150,
+2350,
+'EMP1'
+);
+
+CALL usp_registrarVehiculo
+(
+'PERU-C8G-921',
+1,
+'Hyundai',
+'H-167',
+3,
+3,
+2011,
+'76597564',
+4795,
+1740,
+1965,
+3490,
+1750,
+2350,
+'EMP1'
+);
+
+select*from tb_vehiculo;
+select*from tb_logGeneral;
 
 
 
@@ -93,13 +255,7 @@ END$$
 Delimiter ;
 
 
-DROP PROCEDURE IF EXISTS registrarLog;
-DELIMITER //
-CREATE PROCEDURE registrarLog( usuario VARCHAR(10), descripcion VARCHAR(100), tipo VARCHAR(45))
-begin
-      insert into tb_logGeneral(usuario, descripcion, tipo, fecha, hora) values(usuario, descripcion, tipo, curdate(), curtime());
-END //
-Delimiter ;
+
 
 
 
@@ -121,10 +277,6 @@ ip_ubigeoEmpleado VARCHAR(6),
 ip_fonoEmpleado VARCHAR(9),
 ip_celularEmpleado VARCHAR(11),
 ip_emailEmpleado VARCHAR(100),
-ip_idBanco INT,
-ip_numCuentaAhorroEmpleado VARCHAR(30),
-ip_idAFP INT,
-ip_numAFPEmpleado VARCHAR(30),
 ip_fotoEmpleado VARCHAR(10),
 
 -- Empleado quien lo registra
@@ -151,10 +303,6 @@ BEGIN
 		fonoEmpleado, 
 		celularEmpleado, 
 		emailEmpleado, 
-		idBanco, 
-		numCuentaAhorroEmpleado, 
-		idAFP, 
-		numAFPEmpleado, 
 		fotoEmpleado
 		)
 		VALUES 
@@ -173,10 +321,6 @@ BEGIN
 		ip_fonoEmpleado,
 		ip_celularEmpleado,
 		ip_emailEmpleado,
-		ip_idBanco,
-		ip_numCuentaAhorroEmpleado,
-		ip_idAFP,
-		ip_numAFPEmpleado,
 		ip_fotoEmpleado
 		);
 		call registrarLog(ip_idEmpleado, CONCAT("Empleado registrado: ",idEmpleadoAutogenerado), "INSERT");
@@ -202,10 +346,6 @@ ip_ubigeoEmpleado VARCHAR(6),
 ip_fonoEmpleado VARCHAR(9),
 ip_celularEmpleado VARCHAR(11),
 ip_emailEmpleado VARCHAR(100),
-ip_idBanco int,
-ip_numCuentaAhorroEmpleado VARCHAR(30),
-ip_idAFP int,
-ip_numAFPEmpleado VARCHAR(30),
 ip_fotoEmpleado VARCHAR(10),
 
 -- parametros de empleado chofer
@@ -236,11 +376,7 @@ BEGIN
 		ubigeoEmpleado, 
 		fonoEmpleado, 
 		celularEmpleado, 
-		emailEmpleado, 
-		idBanco, 
-		numCuentaAhorroEmpleado, 
-		idAFP, 
-		numAFPEmpleado, 
+		emailEmpleado,  
 		fotoEmpleado
 		)
 		VALUES 
@@ -259,10 +395,6 @@ BEGIN
 		ip_fonoEmpleado,
 		ip_celularEmpleado,
 		ip_emailEmpleado,
-		ip_idBanco,
-		ip_numCuentaAhorroEmpleado,
-		ip_idAFP,
-		ip_numAFPEmpleado,
 		ip_fotoEmpleado
 		);
 		INSERT INTO tb_empleado_conductor
@@ -285,8 +417,6 @@ END //
 Delimiter ;
 
 
-
-select*from tb_empleado;
 call usp_registrarEmpleado 
 ( 
 '1', 
@@ -302,12 +432,8 @@ call usp_registrarEmpleado
 '6788767', 
 '99887865679', 
 'bonilla@bonansa.com', 
-'1', 
-'123456789012345678901234567890', 
-'1', 
-'123456789012345678901234567890',
 null,
-'EMP1'
+'ADMI'
 );
 
 
@@ -327,12 +453,8 @@ call usp_registrarEmpleado
 '6788767', 
 '99887865679', 
 'tarja@bonansa.com', 
-'1', 
-'123456789012345678901234567890', 
-'1', 
-'123456789012345678901234567890',
 null,
-'USUO1'
+'EMP1'
 );
 
 call usp_registrarEmpleadoConductor 
@@ -350,10 +472,6 @@ call usp_registrarEmpleadoConductor
 '6788767', 
 '99887865679', 
 'reynaldo@bonansa.com', 
-'1', 
-'123456789012345678901234567890', 
-'1', 
-'123456789012345678901234567890',
 null,
 '123456789',
 1,
@@ -378,20 +496,13 @@ call usp_registrarEmpleado
 '6788767', 
 '99887865679', 
 'ricardo@bonansa.com', 
-'1', 
-'123456789012345678901234567890', 
-'1', 
-'123456789012345678901234567890',
 null,
-'USUO'
+'EMP1'
 );
 
 select*from tb_empleado as e inner join tb_tipo_Empleado as te
 on e.idtipoEmpleado=te.idtipoEmpleado;
-
-
 select*from tb_empleado_conductor;
-
 select*from tb_logGeneral;
 
 
@@ -415,10 +526,6 @@ p_ubigeoEmpleado VARCHAR(6),
 p_fonoEmpleado VARCHAR(9),
 p_celularEmpleado VARCHAR(11),
 p_emailEmpleado VARCHAR(100),
-p_idBanco INT,
-p_numCuentaAhorroEmpleado VARCHAR(30),
-p_idAFP INT,
-p_numAFPEmpleado VARCHAR(30),
 p_fotoEmpleado VARCHAR(10),
 
 -- Usuario quien registra
@@ -440,10 +547,6 @@ BEGIN
 		fonoEmpleado=p_fonoEmpleado, 
 		celularEmpleado=p_celularEmpleado, 
 		emailEmpleado=p_emailEmpleado, 
-		idBanco=p_idBanco, 
-		numCuentaAhorroEmpleado=p_numCuentaAhorroEmpleado, 
-		idAFP=p_idAFP, 
-		numAFPEmpleado=p_numAFPEmpleado, 
 		fotoEmpleado=p_fotoEmpleado
 		where idEmpleado=p_idEmpleado;
 		CALL registrarLog(ip_idEmpleadoR, CONCAT("Empleado actualizado: ",p_idEmpleado), "UPDATE");
@@ -457,7 +560,7 @@ call usp_actualizarEmpleado
 '4', 
 '1', 
 '47084553', 
-'Ricarso', 
+'Ricardito', 
 'Maziel', 
 'Lazo', 
 'H', 
@@ -467,10 +570,6 @@ call usp_actualizarEmpleado
 '6788767', 
 '99887865679', 
 'ricardo@bonansa.com', 
-'1', 
-'123456789012345678901234567890', 
-'1', 
-'123456789012345678901234567890',
 null,
 'EMP1'
 );
@@ -672,9 +771,8 @@ call usp_registrarClienteJuridico
 'M',
 '1234567',
 '123456789',
-'luis@gmail.com',
-
-'1',
+'marco@gmail.com',
+'2',
 '12345678900',
 'Razon social',
 '12345',
@@ -687,20 +785,17 @@ delimiter ;
 call usp_registrarClienteNatural
 (
 '2',
-'Marco',
-'Garcia',
-'Altamirano',
+'Joel',
+'Sulca',
+'Gamboa',
 '1990-12-12',
 'M',
 '1234567',
 '123456789',
-'luis@gmail.com',
-
+'joel@gmail.com',
 '1',
 '123456789',
-
-
-'USU09',
+'EMP1',
 @salida
 );
 select @salida;

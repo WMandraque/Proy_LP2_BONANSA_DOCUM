@@ -29,25 +29,7 @@ descCategoriaVeh VARCHAR(5) NOT NULL
 
 
 
-drop table if exists tb_banco;
-CREATE TABLE tb_banco
-(
-idBanco INT AUTO_INCREMENT PRIMARY KEY,
-nomBanco VARCHAR(50) NOT NULL,
-idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_banco_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado(idEstado)
-);
 
-
-
-drop table if exists tb_afp;
-CREATE TABLE tb_afp
-(
-idAFP INT AUTO_INCREMENT PRIMARY KEY,
-nomAFP VARCHAR(50) NOT NULL,
-idEstado char(1) DEFAULT 1,
-CONSTRAINT fk_tb_afp_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado(idEstado)
-);
 
 
 drop table if exists tb_ubigeo;
@@ -69,7 +51,6 @@ numSunatTipoEstablec VARCHAR(2),
 descTipoEstablec VARCHAR(30) NOT NULL,
 descWebServiceSunatTipoEstablec VARCHAR(30) NOT NULL
 );
-
 
 
 
@@ -114,7 +95,7 @@ drop table if exists tb_vehiculo;
 CREATE TABLE tb_vehiculo
 (
 idVeh CHAR(7) NOT NULL,
-placaVeh CHAR(10) NOT NULL,
+placaVeh CHAR(20) NOT NULL,
 idCategoriaVeh INT NOT NULL,
 marcaVeh VARCHAR(15) NOT NULL,
 modeloVeh VARCHAR(15) NOT NULL,
@@ -122,15 +103,12 @@ numAsientosVeh INT NOT NULL,
 numPasajerosVeh INT NOT NULL,
 anhoFabricVeh INT NOT NULL,
 numSerieMotorVeh VARCHAR(20) NOT NULL,
-largoVeh DECIMAL NOT NULL,
-anchoVeh DECIMAL NOT NULL,
-alturaVeh DECIMAL NOT NULL,
-cargaBrutaVeh DECIMAL NOT NULL,
-cargaUtilVeh DECIMAL NOT NULL,
-cargaNetaVeh DECIMAL NOT NULL,
-largoFurgonVeh DECIMAL NOT NULL,
-anchoFurgonVeh DECIMAL NOT NULL,
-alturaFurgonVeh DECIMAL NOT NULL,
+largoVeh DECIMAL(6,2) NOT NULL,
+anchoVeh DECIMAL(6,2) NOT NULL,
+alturaVeh DECIMAL(6,2) NOT NULL,
+cargaBrutaVeh DECIMAL(6,2) NOT NULL,
+cargaUtilVeh DECIMAL(6,2) NOT NULL,
+cargaNetaVeh DECIMAL(6,2) NOT NULL,
 idEstado char(1) DEFAULT 1,
 idEstadoTrabajo char(1) DEFAULT 0,
 CONSTRAINT fk_tb_tb_vehiculo_tb_estadoTrabajo  FOREIGN KEY (idEstadoTrabajo)      REFERENCES tb_estadoTrabajo(idEstadoTrabajo),
@@ -160,17 +138,11 @@ ubigeoEmpleado VARCHAR(6) NOT NULL,
 fonoEmpleado VARCHAR(9),
 celularEmpleado VARCHAR(11),
 emailEmpleado VARCHAR(100) NOT NULL,
-idBanco INT NOT NULL,
-numCuentaAhorroEmpleado VARCHAR(30),
-idAFP INT NOT NULL,
-numAFPEmpleado VARCHAR(30),
 fotoEmpleado VARCHAR(10),
 idEstado char(1) DEFAULT 1,
 idEstadoTrabajo char(1) DEFAULT 0,
 CONSTRAINT fk_tb_empleado_tb_tipo_empleado                           FOREIGN KEY(idTipoEmpleado)   REFERENCES tb_tipo_empleado (idTipoEmpleado),
 CONSTRAINT fk_tb_empleado_tb_tipo_documento_identificacion           FOREIGN KEY(idTipoDocId)      REFERENCES tb_tipo_documento_identificacion (idTipoDocId),
-CONSTRAINT fk_tb_empleado_tb_banco                                   FOREIGN KEY(idBanco)          REFERENCES tb_banco(idBanco),
-CONSTRAINT fk_tb_empleado_tb_afp                                     FOREIGN KEY (idAFP)           REFERENCES tb_afp(idAFP),
 CONSTRAINT fk_tb_empleado_tb_estado                                  FOREIGN KEY (idEstado)        REFERENCES tb_estado(idEstado),
 CONSTRAINT fk_tb_empleado_tb_estadoTrabajo                           FOREIGN KEY (idEstadoTrabajo) REFERENCES tb_estadoTrabajo(idEstadoTrabajo)
 );
