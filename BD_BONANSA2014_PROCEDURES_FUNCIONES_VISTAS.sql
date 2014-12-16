@@ -124,7 +124,7 @@ begin
     
 	declare idVehiculoAuto char(7);
     set     idVehiculoAuto=CalcularIdVehiculo();
-    SET AUTOCOMMIT=0;
+  
     START TRANSACTION;
 		insert into tb_vehiculo
 		(
@@ -163,7 +163,7 @@ begin
 		ip_cargaNetaVeh
 		);
 		call registrarLog(ip_idEmpleado, CONCAT("Vehiculo registrado: ",idVehiculoAuto), "INSERT");
-    commit;
+   commit;
 END$$
 Delimiter ;
 
@@ -814,7 +814,7 @@ call usp_registrarUsuario('EMP2', '123', 2);
 call usp_registrarUsuario('EMP3', '123', 3);
 select*from tb_usuario;
 
-call validarEmpleado('EMP1', '12s3', @salida);
+call validarEmpleado('EMP1', '123', @salida);
 select @salida;
 
 
