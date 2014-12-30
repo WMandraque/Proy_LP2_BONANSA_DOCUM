@@ -1,12 +1,13 @@
 use bd_bonansa2014;
 
 
-INSERT INTO tb_estado VALUES ('1', 'ACTIVO'), ('0','INACTIVO');
+INSERT INTO tb_estado(idEstado, descEstado) VALUES ('1','ACTIVO'), ('0','INACTIVO');
 select*From tb_estado;
+select*From tb_estado where idEstado=1;
 
 
 INSERT INTO tb_estadoTrabajo VALUES ('1', 'OCUPADO'), ('0','DESOCUPADO');
-Select*from tb_estadoTrabajo;
+Select * from tb_estadoTrabajo where descEstado='OCUPADO';
 
 
 
@@ -15,7 +16,7 @@ INSERT INTO tb_categorialicencia_conductor VALUES (NULL,'Sin Asignar');
 INSERT INTO tb_categorialicencia_conductor VALUES (NULL,'IB');
 INSERT INTO tb_categorialicencia_conductor VALUES (NULL,'IIB');
 INSERT INTO tb_categorialicencia_conductor VALUES (NULL,'IIIB');
-SELECT * FROM tb_categorialicencia_conductor;
+SELECT * FROM tb_categorialicencia_conductor WHERE idCategorialic=1;
 
 
 
@@ -24,7 +25,7 @@ INSERT INTO tb_claselicencia_conductor VALUES (NULL,'Sin Asignar');
 INSERT INTO tb_claselicencia_conductor VALUES (NULL,'A');
 INSERT INTO tb_claselicencia_conductor VALUES (NULL,'B');
 INSERT INTO tb_claselicencia_conductor VALUES (NULL,'C');
-SELECT * FROM tb_claselicencia_conductor;
+
 
 
 INSERT INTO tb_categoriavehiculo (`idCategoriaVeh`, `descCategoriaVeh`) VALUES ('1', 'N1');
@@ -35,10 +36,10 @@ select*From tb_categoriavehiculo;
 
 
 INSERT INTO tb_tipo_cliente(descTipoCliente) values ('JURIDICO'), ('NATURAL'); 
-select*From tb_tipo_cliente;
+
 
 INSERT INTO tb_tipo_empleado(nomCargo) values ('ADMINISTRADOR'), ('REPCECIONISTA'),('CONDUCTOR'),('ESTIBADOR');
-SELECT*FROM tb_tipo_empleado;
+
 
 
 INSERT INTO tb_tipo_documento_identificacion (descTipoDoc) VALUES ('DNI');

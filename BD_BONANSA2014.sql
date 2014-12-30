@@ -27,11 +27,6 @@ idCategoriaVeh INT AUTO_INCREMENT PRIMARY KEY,
 descCategoriaVeh VARCHAR(5) NOT NULL
 );
 
-
-
-
-
-
 drop table if exists tb_ubigeo;
 CREATE TABLE tb_ubigeo
 (
@@ -100,7 +95,6 @@ idCategoriaVeh INT NOT NULL,
 marcaVeh VARCHAR(15) NOT NULL,
 modeloVeh VARCHAR(15) NOT NULL,
 numAsientosVeh INT NOT NULL,
-numPasajerosVeh INT NOT NULL,
 anhoFabricVeh INT NOT NULL,
 numSerieMotorVeh VARCHAR(20) NOT NULL,
 largoVeh DECIMAL(6,2) NOT NULL,
@@ -109,6 +103,7 @@ alturaVeh DECIMAL(6,2) NOT NULL,
 cargaBrutaVeh DECIMAL(6,2) NOT NULL,
 cargaUtilVeh DECIMAL(6,2) NOT NULL,
 cargaNetaVeh DECIMAL(6,2) NOT NULL,
+fotoVehiculo longblob,
 idEstado char(1) DEFAULT 1,
 idEstadoTrabajo char(1) DEFAULT 0,
 CONSTRAINT fk_tb_tb_vehiculo_tb_estadoTrabajo  FOREIGN KEY (idEstadoTrabajo)      REFERENCES tb_estadoTrabajo(idEstadoTrabajo),
@@ -126,7 +121,6 @@ CREATE TABLE tb_empleado
 (
 idEmpleado char(7)not null PRIMARY KEY,
 idTipoEmpleado INT not null,
-idTipoDocId int not null,
 numDocumento char(9),
 nomEmpleado VARCHAR(100) NOT NULL,
 apepaEmpleado VARCHAR(100) NOT NULL,
@@ -138,11 +132,10 @@ ubigeoEmpleado VARCHAR(6) NOT NULL,
 fonoEmpleado VARCHAR(9),
 celularEmpleado VARCHAR(11),
 emailEmpleado VARCHAR(100) NOT NULL,
-fotoEmpleado VARCHAR(10),
+fotoEmpleado longblob,
 idEstado char(1) DEFAULT 1,
 idEstadoTrabajo char(1) DEFAULT 0,
 CONSTRAINT fk_tb_empleado_tb_tipo_empleado                           FOREIGN KEY(idTipoEmpleado)   REFERENCES tb_tipo_empleado (idTipoEmpleado),
-CONSTRAINT fk_tb_empleado_tb_tipo_documento_identificacion           FOREIGN KEY(idTipoDocId)      REFERENCES tb_tipo_documento_identificacion (idTipoDocId),
 CONSTRAINT fk_tb_empleado_tb_estado                                  FOREIGN KEY (idEstado)        REFERENCES tb_estado(idEstado),
 CONSTRAINT fk_tb_empleado_tb_estadoTrabajo                           FOREIGN KEY (idEstadoTrabajo) REFERENCES tb_estadoTrabajo(idEstadoTrabajo)
 );
@@ -189,23 +182,10 @@ sexoCliente VARCHAR(1) CHECK(sexoCliente IN ('F','M')),
 telefonoCliente VARCHAR(9),
 celularCliente VARCHAR(11),
 correoCliente VARCHAR(60),
+numDocumento char(9) not null,
 idEstado char(1) DEFAULT 1,
 CONSTRAINT fk_tb_cliente_tb_tipo_cliente                FOREIGN KEY(idTipoCliente)     REFERENCES tb_tipo_cliente(idTipoCliente),
 CONSTRAINT fk_tb_cliente_tb_estado_entidades            FOREIGN KEY (idEstado)         REFERENCES tb_estado(idEstado)
-);
-
-
-
-
-drop table if exists tb_cliente_natural;
-CREATE TABLE tb_cliente_natural
-(
-idCliente varchar(7)not null,
-idTipoDocId int not null,
-numDocumento char(9) not null,
-CONSTRAINT fk_tb_cliente_natural_tb_cliente                         FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente),
-CONSTRAINT pk_tb_cliente_natural PRIMARY KEY(idCliente),
-CONSTRAINT fk_tb_cliente_natural_tb_tipo_documento_identificacion    FOREIGN KEY(idTipoDocId)    REFERENCES tb_tipo_documento_identificacion (idTipoDocId)
 );
 
 
@@ -215,14 +195,11 @@ drop table if exists tb_cliente_juridico;
 CREATE TABLE tb_cliente_juridico
 (
 idCliente varchar(7)not null,
-idTipoDocId int not null,
-rucCliente VARCHAR(11)not null,
 razSocCliente VARCHAR(70)not null,
 ciiuCliente VARCHAR(5)not null,
 cargoContacCliente VARCHAR(50)not null,
 CONSTRAINT fk_tb_cliente_juridico_tb_cliente                         FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente),
-CONSTRAINT pk_tb_cliente_juridico PRIMARY KEY(idCliente), 
-CONSTRAINT fk_tb_cliente_juridico_tb_tipo_documento_identificacion    FOREIGN KEY(idTipoDocId)    REFERENCES tb_tipo_documento_identificacion (idTipoDocId)
+CONSTRAINT pk_tb_cliente_juridico PRIMARY KEY(idCliente)
 );
 
 
