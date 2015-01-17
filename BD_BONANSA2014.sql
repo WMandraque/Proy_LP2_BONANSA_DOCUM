@@ -3,12 +3,38 @@ CREATE DATABASE bd_bonansa2014;
 USE bd_bonansa2014;
 
 
+
+-- estados para las ordenes de recojo
+drop table if exists tb_estadoOR;
+CREATE TABLE tb_estadoOR
+(
+idEstadoOr char(1) primary key,
+descEstadoOr VARCHAR(50) NOT NULL
+);
+
+
+--
+drop table if exists tb_estadoGRT;
+CREATE TABLE tb_estadoGRT
+(
+idEstadoGRT char(1) primary key,
+descEstadoGRT VARCHAR(50) NOT NULL
+);
+
 -- Para eliminar entidades
 drop table if exists tb_estado;
 CREATE TABLE tb_estado
 (
 idEstado char(1) primary key,
 descEstado VARCHAR(50) NOT NULL
+);
+
+
+drop table if exists tb_rol;
+CREATE TABLE tb_rol
+(
+idRol char(1) primary key,
+descRol VARCHAR(50) NOT NULL
 );
 
 
@@ -84,6 +110,13 @@ idTipoDocId INT AUTO_INCREMENT primary key,
 descTipoDoc VARCHAR(30) NOT NULL
 );
 
+
+drop table if exists tb_tipoUnidadMedida;
+CREATE TABLE tb_tipoUnidadMedida
+(
+idTipoUnidadMedida INT AUTO_INCREMENT primary key, 
+descTipoUnidadMedida VARCHAR(30) NOT NULL
+);
 
 
 drop table if exists tb_vehiculo;
@@ -161,11 +194,11 @@ CREATE TABLE tb_usuario
 (
 idEmpleado char(7) not null,
 clave VARCHAR(30) not null,
-idTipoEmpleado int not null,
+idRol CHAR(1) not null,
 idEstado char(1) DEFAULT 1,
 CONSTRAINT fk_tb_usuario_tb_empleado FOREIGN KEY (idEmpleado) REFERENCES tb_empleado(idEmpleado),
 CONSTRAINT pk_tb_usuario PRIMARY KEY(idEmpleado),
-CONSTRAINT fk_tb_usuario_tb_tipo_empleado FOREIGN KEY (idTipoEmpleado) REFERENCES tb_tipo_empleado(idTipoEmpleado),
+CONSTRAINT fk_tb_usuario_tb_rol FOREIGN KEY (idRol) REFERENCES tb_rol(idRol),
 CONSTRAINT fk_tb_usuario_tb_estado_entidades FOREIGN KEY (idEstado) REFERENCES tb_estado(idEstado)
 );
 -- Cliente padre
@@ -221,29 +254,33 @@ CONSTRAINT fk_tb_direccionescliente_tb_tipoestablecimiento     FOREIGN KEY (idTi
 drop table if exists tb_ordenRecojo;
 CREATE TABLE tb_ordenRecojo
 (
-idOR INT AUTO_INCREMENT PRIMARY KEY,
+idOR CHAR(7) NOT NULL,
 idCliente char(7)not null,
-fechaRecojo date not null,
 direccionRecojo varchar(300),
-horaRecojo  date not null, 
-CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente)
+fechaRecojo date not null,
+horaRecojo  time not null,
+idEstadoOr  CHAR(1) default 0, 
+CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente),
+CONSTRAINT fk_tb_ordenRecojo_tb_estadoOR FOREIGN KEY(idEstadoOr) REFERENCES tb_estadoOR(idEstadoOr),
+CONSTRAINT pk_tb_ordenRecojo PRIMARY KEY(idOR)
 );
 
 
 drop table if exists tb_equipoVehicular_OrdenRecojo;
 CREATE TABLE tb_equipoVehicular_OrdenRecojo
 (
-idOR INT NOT NULL,
-idVeh CHAR(10) NOT NULL,
-CONSTRAINT fk_detalle_OrdenRecojo_tb_ordenRecojo FOREIGN KEY(idOR) references tb_OrdenRecojo(idOr),
+idOR CHAR(7) NOT NULL,
+idVeh CHAR(7) NOT NULL,
+CONSTRAINT fk_detalle_OrdenRecojo_tb_ordenRecojo FOREIGN KEY(idOR) references tb_OrdenRecojo(idOR),
 CONSTRAINT fk_tb_equipoVehicular_OrdenRecojo_tb_vehiculo FOREIGN KEY(idVeh) REFERENCES tb_vehiculo(idVeh),
 CONSTRAINT pk_tb_equipoVehicular_OrdenRecojo PRIMARY KEY(idOR, idVeh)
 );
 
+
 drop table if exists tb_equipoPersonal_OrdenRecojo;
 CREATE TABLE tb_equipoPersonal_OrdenRecojo
 (
-idOR INT NOT NULL,
+idOR CHAR(7) NOT NULL,
 idEmpleado CHAR(10) NOT NULL,
 CONSTRAINT fk_tb_equipoPersonal_OrdenRecojo_tb_ordenRecojo FOREIGN KEY(idOR) references tb_OrdenRecojo(idOr),
 CONSTRAINT fk_tb_equipoPersonal_OrdenRecojo_tb_empleado    FOREIGN KEY(idEmpleado)     REFERENCES tb_empleado(idEmpleado),
@@ -255,12 +292,14 @@ CONSTRAINT pk_tb_equipoPersonal_OrdenRecojo PRIMARY KEY(idOR, idEmpleado)
 drop table if exists tb_detalle_ordenRecojo;
 CREATE TABLE tb_detalle_ordenRecojo
 (
-idOR INT NOT NULL,
-numCodGR VARCHAR(30) NOT NULL,
-numCodFT VARCHAR(30) NOT NULL,
-descripcion varchar(200) NOT NULL,
+idOR CHAR(7) NOT NULL,
+descripcionTraslado VARCHAR(200) NOT NULL,
+cantidad INT NOT NULL,
+idTipoUnidadMedida INT,
+PesokG DECIMAL(6,2),
 CONSTRAINT fk_detalle_OrdenRecojo FOREIGN KEY(idOR) references tb_OrdenRecojo(idOr),
-CONSTRAINT pk_tb_detalle_ordenRecojo PRIMARY KEY(idOR, numCodGR, numCodFT )
+CONSTRAINT fk_detalle_OrdenRecojo_tb_tipoUnidadMedida FOREIGN KEY(idTipoUnidadMedida) references tb_tipoUnidadMedida(idTipoUnidadMedida),
+CONSTRAINT pk_tb_detalle_ordenRecojo PRIMARY KEY(idOR, descripcionTraslado)
 );
 
 
@@ -268,55 +307,51 @@ CONSTRAINT pk_tb_detalle_ordenRecojo PRIMARY KEY(idOR, numCodGR, numCodFT )
 drop table if exists tb_GRT;
 CREATE TABLE tb_GRT
 (
-idGRT INT PRIMARY KEY AUTO_INCREMENT,
+idGRT CHAR(7) PRIMARY KEY,
+idEmpleado CHAR(7) NOT NULL,
+idVeh CHAR(7) NOT NULL,
 fecInicioTraslado DATE,
-idCliRemitente varchar(7) NOT NULL,
+idCliRemitente char(7) NOT NULL,
 direcCliRemitente varchar(200) not null,
 nomCliDestinatario varchar(100) not null,
 apepaCliDestinatario varchar(100) not null,
 apemaCliDestinatario varchar(100) not null,
-idTipoDocId INT not null,
+idTipoDocId INT NOT NULL,
 numDocCliDestinatario char(50) not null,
 direcClienteDestinatario varchar(200) not null,
+fechaMinTraslado DATE NOT NULL,
+fechaMaxTraslado DATE NOT NULL,
+idEstadoGRT CHAR(1) DEFAULT '0',
 CONSTRAINT fk_tb_GRT_tb_cliente  FOREIGN KEY (idCliRemitente) REFERENCES tb_cliente(idCliente),
-CONSTRAINT fk_tb_GRT_idTipoDocId FOREIGN KEY (idTipoDocId)    REFERENCES tb_tipo_documento_identificacion(idTipoDocId)
+CONSTRAINT fk_tb_GRT_idTipoDocId FOREIGN KEY (idTipoDocId)    REFERENCES tb_tipo_documento_identificacion(idTipoDocId),
+CONSTRAINT fk_tb_GRT_tb_empleado_conductor               FOREIGN KEY(idEmpleado)     REFERENCES tb_empleado_conductor(idEmpleado),
+CONSTRAINT fk_tb_ordenRecojo_tb_estadoGRT FOREIGN KEY(idEstadoGRT) REFERENCES tb_estadoGRT(idEstadoGRT),
+CONSTRAINT fk_tb_GRT_tb_vehiculo FOREIGN KEY(idVeh) REFERENCES tb_vehiculo(idVeh)
 );
-
-drop table if exists tb_GRT_equipoVehiculo;
-create table tb_GRT_equipoVehiculo
-(
-idGRT INT NOT NULL,
-idVeh CHAR(7) NOT NULL,
-placaVeh CHAR(10) NOT NULL,
-CONSTRAINT fk_tb_GRT_equipoVehiculo_tb_GRT FOREIGN KEY(idGRT)                      REFERENCES tb_GRT(idGRT),
-CONSTRAINT fk_tb_GRT_equipoVehiculo_tb_equipoVehiculo FOREIGN KEY(idVeh,placaVeh)        REFERENCES tb_vehiculo(idVeh,placaVeh)
-);
-
-
-drop table if exists tb_GRT_equipoPersonal;
-create table tb_GRT_equipoPersonal
-(
-idGRT INT NOT NULL,
-idEmpleado CHAR(7) NOT NULL,
-CONSTRAINT fk_tb_GRT_equipoPersonal_tb_GRT FOREIGN KEY(idGRT) REFERENCES tb_GRT(idGRT),
-CONSTRAINT fk_tb_GRT_equipoPersonal_tb_empleado FOREIGN KEY(idEmpleado) REFERENCES tb_empleado(idEmpleado)
-);
-
 
 drop table if exists tb_detalle_GRT;
 CREATE TABLE tb_detalle_GRT
 (
-idGRT INT,
+idGRT CHAR(7)NOT NULL,
 numCodGR VARCHAR(30),
 numCodFT VARCHAR(30),
 descTraslado VARCHAR(30),
 cantidad INT,
-unidadMedida VARCHAR(30),
+idTipoUnidadMedida INT,
 pesoKg DECIMAL(18,6),
-fecMinEntrega DATE,
-fecMaxEntrega DATE,
 CONSTRAINT fk_tb_detalle_GRT_tb_GRT  FOREIGN KEY (idGRT) REFERENCES tb_GRT(idGRT),
-CONSTRAINT pk_detalle_GRT PRIMARY KEY(idGRT, numCodGR, numCodFT)
+CONSTRAINT pk_detalle_GRT PRIMARY KEY(idGRT, numCodGR, numCodFT),
+CONSTRAINT fk_tb_detalle_GRT_tb_tipoUnidadMedida FOREIGN KEY(idTipoUnidadMedida) references tb_tipoUnidadMedida(idTipoUnidadMedida)
+);
+
+
+drop table if exists tb_equipoTrasladoGRT;
+CREATE TABLE tb_equipoTrasladoGRT
+(
+idGRT CHAR(7)NOT NULL,
+idEmpleado CHAR(7) NOT NULL,
+CONSTRAINT fk_tb_equipoTrasladoGRT_tb_empleado    FOREIGN KEY(idEmpleado)     REFERENCES tb_empleado(idEmpleado),
+CONSTRAINT pk_detalle_GRT PRIMARY KEY(idGRT, idEmpleado)
 );
 
 drop table if exists tb_logGeneral;

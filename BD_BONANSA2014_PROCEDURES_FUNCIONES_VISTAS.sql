@@ -52,6 +52,53 @@ end;
 $$
 Delimiter ;
 
+-- Generar GRT 
+DROP FUNCTION if exists CalcularIdGRT;
+DELIMITER $$
+CREATE FUNCTION CalcularIdGRT()-- Retornara el codigo del empleado convertido
+Returns CHAR(7)
+begin
+    
+	Declare ultimoRegistro char(7);
+    Declare numeroCapturado int;
+	Declare idGRTGenerado Char(7);
+	
+    -- Capturamos el ultimo registro!!
+	Set ultimoRegistro=(select max(idGRT)from tb_GRT);
+
+    -- si no existen registros, retornaremos por default un codigo
+	if (ultimoRegistro is null) then
+    set idGRTGenerado='GRT0001';
+    return idGRTGenerado;
+    end if;
+    
+    set numeroCapturado=SUBSTR(ultimoRegistro, 4);
+    -- Aumentaremos + 1 , el numero capturado
+    set numeroCapturado=numeroCapturado+1;
+
+    -- si el numero aumentado es menor a ....
+    if(numeroCapturado<=9) then
+        -- concatenaremos 
+        set idGRTGenerado=CONCAT('GRT000',numeroCapturado);
+    return idGRTGenerado;
+
+    elseif(numeroCapturado<=99) then
+        set idGRTGenerado=CONCAT('GRT00',numeroCapturado);
+    return idGRTGenerado;
+
+    elseif(numeroCapturado<=999) then
+        set idGRTGenerado=CONCAT('GRT0',numeroCapturado);
+    return idGRTGenerado;
+
+    else
+        set idGRTGenerado=CONCAT('GRT',numeroCapturado);
+        return idGRTGenerado;
+    end if;
+end;
+$$
+Delimiter ;
+
+
 
 DROP FUNCTION if exists CalcularIdEmpleado;
 DELIMITER $$
@@ -153,6 +200,59 @@ begin
 end;
 $$
 Delimiter ;
+
+
+
+DROP FUNCTION if exists CalcularIdOrdenRecojo;
+DELIMITER $$
+CREATE FUNCTION CalcularIdOrdenRecojo()-- Retornara el codigo del empleado convertido
+Returns CHAR(7)
+begin
+    
+	Declare ultimoRegistro char(7);
+    Declare numeroCapturado int;
+	Declare idORGenerado Char(7);
+	
+    -- Capturamos el ultimo registro!!
+	Set ultimoRegistro=(select max(idOR)from tb_ordenRecojo);
+
+    -- si no existen registros, retornaremos por default un codigo
+	if (ultimoRegistro is null) then
+    set idORGenerado='SOR0001';
+    return idORGenerado;
+    end if;
+    
+    -- Si existe algun registro entonces
+
+    -- Separaremos los prefijos de los numeros quedandonos solo con los numeros
+    -- SUBSTR(ultimoRegistro, 4) ejemplo: EMP0001 entonces obtendremos:
+    -- 0001 que sera transformado en 1 al ser entero
+    set numeroCapturado=SUBSTR(ultimoRegistro, 4);
+    -- Aumentaremos + 1 , el numero capturado
+    set numeroCapturado=numeroCapturado+1;
+
+    -- si el numero aumentado es menor a ....
+    if(numeroCapturado<=9) then
+        -- concatenaremos 
+       set idORGenerado=CONCAT('SOR000',numeroCapturado);
+       return idORGenerado;
+
+    elseif(numeroCapturado<=99) then
+        set idORGenerado=CONCAT('SOR00',numeroCapturado);
+    return idORGenerado;
+
+    elseif(idORGenerado<=999) then
+        set idORGenerado=CONCAT('SOR0',numeroCapturado);
+    return idORGenerado;
+
+    else
+        set idORGenerado=CONCAT('SOR',numeroCapturado);
+        return idORGenerado;
+    end if;
+end;
+$$
+Delimiter ;
+
 
 
 
@@ -379,52 +479,6 @@ Delimiter ;
 
 
 
-DROP PROCEDURE IF EXISTS usp_registrarUsuario;
-DELIMITER $$
-CREATE PROCEDURE usp_registrarUsuario
-(
-ip_idEmpleado char(7),
-ip_clave VARCHAR(30),
-ip_idTipoEmpleado int
-)
-begin
-	insert into tb_usuario
-	(
-	idEmpleado,
-	clave,
-	idTipoEmpleado
-	) 
-	values(
-	ip_idEmpleado,
-	ip_clave,
-	ip_idTipoEmpleado
-	);
-END$$
-Delimiter ;
-
-
-DROP PROCEDURE IF EXISTS validarEmpleado;
-DELIMITER $$
-CREATE PROCEDURE validarEmpleado
-(
-ip_idEmpleado char(7), 
-ip_clave varchar(30),
-INOUT op_idEmpleado char(7)
-)
-begin
-      select u.*, e.nomEmpleado, e.apepaEmpleado, e.apemaEmpleado, te.nomCargo from 
-      tb_usuario as u inner join tb_empleado as e
-      on u.idEmpleado=e.idEmpleado
-	  inner join tb_tipo_empleado as te
-      on u.idTipoEmpleado=te.idTipoEmpleado
-      where u.idEmpleado=ip_idEmpleado and u.clave=ip_clave;
-
-	 set op_idEmpleado=concat((SELECT u.idEmpleado FROM tb_usuario as u where u.idEmpleado=ip_idEmpleado and u.clave=ip_clave));
-
-
-END$$
-Delimiter ;
-
 
 
 
@@ -615,6 +669,42 @@ null,
 'EMP0001'
 );
 
+call usp_registrarEmpleado 
+( 
+'4', 
+'47084553', 
+'Fernado', 
+'Colunga', 
+'Soto', 
+'M', 
+'1970/07/08', 
+'Los ruiseñores 325', 
+'1231', 
+'6788767', 
+'99887865679', 
+'fernadoC@bonansa.com', 
+null,
+'EMP0001'
+);
+
+call usp_registrarEmpleado 
+( 
+'4', 
+'47084553', 
+'Eugenio', 
+'Derbez', 
+'Cuando', 
+'M', 
+'1989/07/08', 
+'Los rosales 123', 
+'1231', 
+'6788767', 
+'99887865679', 
+'ederbez@bonansa.com', 
+null,
+'EMP0001'
+);
+
 call usp_registrarEmpleadoConductor 
 ( 
 '3', 
@@ -635,6 +725,49 @@ null,
 1,
 'EMP0001'
 );
+
+call usp_registrarEmpleadoConductor 
+( 
+'3', 
+'47084553', 
+'Angel', 
+'David', 
+'Revilla', 
+'M', 
+'1980/07/08', 
+'Imperial 325', 
+'1231', 
+'6788767', 
+'966759235', 
+'angelDavid@bonansa.com', 
+null,
+'123456789',
+1,
+1,
+'EMP0001'
+);
+
+call usp_registrarEmpleadoConductor 
+( 
+'3', 
+'47084553', 
+'German', 
+'Mattz', 
+'Garmendia', 
+'M', 
+'1980/07/08', 
+'chavin 325', 
+'1231', 
+'6788767', 
+'966759235', 
+'germanG@bonansa.com', 
+null,
+'123456789',
+1,
+1,
+'EMP0001'
+);
+
 
 
 call usp_registrarEmpleado 
@@ -828,11 +961,12 @@ ip_idEmpleado char(7),
 ip_idEmpleadoR char(7)
 )
 BEGIN
-	START transaction;
-		UPDATE tb_empleado set idEstado=0
+	declare x char(7);
+    set x=ip_idEmpleadoR;
+		  UPDATE tb_empleado set idEstado=0
 		  where idEmpleado=ip_idEmpleado;
-		CALL registrarLog(ip_idEmpleadoR, CONCAT("Empleado eliminado: ",ip_idEmpleado), "DELETE");
-	COMMIT;
+		  CALL registrarLog(x, CONCAT("Empleado eliminado: ",ip_idEmpleado), "DELETE");
+
 END //
 Delimiter ;
 
@@ -843,6 +977,7 @@ select*from tb_empleado;
 select*from tb_logGeneral;
 
 
+-- ---------------------------------------------------------
 DROP PROCEDURE IF EXISTS usp_registrarClienteJuridico;
 DELIMITER //
 CREATE PROCEDURE usp_registrarClienteJuridico
@@ -982,6 +1117,145 @@ END //
 Delimiter ;
 
 
+DROP PROCEDURE IF EXISTS usp_actualizarClienteNatural;
+DELIMITER //
+CREATE PROCEDURE usp_actualizarClienteNatural
+(
+ip_idCliente char(7),
+ip_nomCliente VARCHAR(60),
+ip_apePatCliente VARCHAR(60),
+ip_apeMatCliente VARCHAR(60),
+ip_fecNacCliente DATE,
+ip_sexoCliente VARCHAR(1),
+ip_telefonoCliente VARCHAR(9),
+ip_celularCliente VARCHAR(11),
+ip_correoCliente VARCHAR(60),
+-- parametros del cliente natural
+ip_numDocumento char(9),
+ip_idEstado char(1),
+
+-- empleado quien registra
+ip_idEmpleadoR varchar(7)
+)
+begin
+			update tb_cliente set
+								nomCliente=ip_nomCliente,
+								apePatCliente=ip_apePatCliente,
+								apeMatCliente=ip_apeMatCliente,
+								fecNacCliente=ip_fecNacCliente,
+								sexoCliente=ip_sexoCliente,
+								telefonoCliente=ip_telefonoCliente,
+								celularCliente=ip_celularCliente,
+								correoCliente=ip_correoCliente,
+								numDocumento=ip_numDocumento,
+                                idEstado=ip_idEstado
+
+			where idCliente=ip_idCliente;
+			CALL registrarLog(ip_idEmpleadoR, CONCAT("Cliente actualizado: ",ip_idCliente), "UPDATE");
+END //
+Delimiter ;
+
+DROP PROCEDURE IF EXISTS usp_actualizarClienteJuridico;
+DELIMITER //
+CREATE PROCEDURE usp_actualizarClienteJuridico
+(
+ip_idCliente char(7),
+ip_nomCliente VARCHAR(60),
+ip_apePatCliente VARCHAR(60),
+ip_apeMatCliente VARCHAR(60),
+ip_fecNacCliente DATE,
+ip_sexoCliente VARCHAR(1),
+ip_telefonoCliente VARCHAR(9),
+ip_celularCliente VARCHAR(11),
+ip_correoCliente VARCHAR(60),
+ip_numDocumento char(9),
+ip_idEstado char(1),
+
+-- parametros del cliente juridico
+ip_razSocCliente VARCHAR(70),
+ip_ciiuCliente VARCHAR(5),
+ip_cargoContacCliente VARCHAR(50),
+
+-- empleado quien registra
+ip_idEmpleadoR varchar(7)
+)
+begin
+			update tb_cliente set
+								nomCliente=ip_nomCliente,
+								apePatCliente=ip_apePatCliente,
+								apeMatCliente=ip_apeMatCliente,
+								fecNacCliente=ip_fecNacCliente,
+								sexoCliente=ip_sexoCliente,
+								telefonoCliente=ip_telefonoCliente,
+								celularCliente=ip_celularCliente,
+								correoCliente=ip_correoCliente,
+								numDocumento=ip_numDocumento,
+                                idEstado=ip_idEstado
+
+			where idCliente=ip_idCliente;
+
+			update tb_cliente_juridico set
+						razSocCliente=ip_razSocCliente,
+						ciiuCliente=ip_ciiuCliente,
+						cargoContacCliente=ip_cargoContacCliente
+			where idCliente=ip_idCliente;
+
+			CALL registrarLog(ip_idEmpleadoR, CONCAT("Cliente actualizado: ",ip_idCliente), "UPDATE");
+END //
+Delimiter ;
+
+
+DROP PROCEDURE IF EXISTS usp_eliminarCliente;
+DELIMITER //
+CREATE PROCEDURE usp_eliminarCliente
+(
+ip_idCliente char(7),
+
+-- empleado quien elimina
+ip_idEmpleadoR char(7)
+)
+begin
+		 
+
+			update tb_cliente set
+                                idEstado='0'
+
+			where idCliente=ip_idCliente;
+			CALL registrarLog(ip_idEmpleadoR, CONCAT("Cliente eliminado: ",ip_idCliente), "DELETE");
+END //
+Delimiter ;
+
+
+DROP PROCEDURE IF EXISTS usp_registrarDireccionesCliente;
+DELIMITER //
+CREATE PROCEDURE usp_registrarDireccionesCliente
+(
+-- parametros del cliente
+
+ip_idCliente varchar(7),
+ip_direcDirecCliente VARCHAR(200),
+ip_codubigeoDirecCliente VARCHAR(6),
+ip_idTipoEstablec INT
+)
+begin
+			insert into tb_direccionescliente
+			(
+			idCliente,
+			direcDirecCliente,
+			codubigeoDirecCliente,
+			idTipoEstablec
+			)
+             value
+			(
+			ip_idCliente,
+			ip_direcDirecCliente,
+			ip_codubigeoDirecCliente,
+			ip_idTipoEstablec
+			);
+END //
+Delimiter ;
+
+select*from tb_direccionescliente;
 call usp_registrarClienteJuridico
 (
 '1',
@@ -1001,6 +1275,24 @@ call usp_registrarClienteJuridico
 @salida
 );
 
+call usp_registrarClienteJuridico
+(
+'1',
+'Jose',
+'Falcon',
+'Herrera',
+'1978-12-12',
+'M',
+'1234567',
+'123456789',
+'josef@gmail.com',
+'123456',
+'DROPESAC',
+'12345',
+'UI',
+'EMP0001',
+@salida
+);
 delimiter ; 
 call usp_registrarClienteNatural
 (
@@ -1017,27 +1309,550 @@ call usp_registrarClienteNatural
 'EMP0001',
 @salida
 );
+call usp_registrarClienteNatural
+(
+'2',
+'Debora',
+'Sulca',
+'Gamboa',
+'1976-12-12',
+'F',
+'1234567',
+'123456789',
+'dsulca@gmail.com',
+'123456789',
+'EMP0001',
+@salida
+);
 select @salida;
+
+CALL usp_registrarDireccionesCliente('CLI0001','Calandrias 234','020105','1');
+CALL usp_registrarDireccionesCliente('CLI0001','Las lomas 325','020112','1');
+CALL usp_registrarDireccionesCliente('CLI0002','Ollantay 56','020504','1');
+CALL usp_registrarDireccionesCliente('CLI0002','Siempre viva 123','030702','1');
+CALL usp_registrarDireccionesCliente('CLI0003','ciudad gotica 23','160210','1');
+CALL usp_registrarDireccionesCliente('CLI0003','Los rosales 122','190101','1');
+CALL usp_registrarDireccionesCliente('CLI0004','Los girasoles 34','200607','1');
+CALL usp_registrarDireccionesCliente('CLI0004','Chavin 325','211210','1');
 
 select*from tb_cliente as c inner join tb_tipo_cliente as tc
 on c.idTipoCliente=tc.idtipoCliente;
 select*from tb_logGeneral as lg;
 
+select*from tb_cliente_juridico;
+
+-- -------------------------------------------
+
+DROP PROCEDURE IF EXISTS usp_registrarUsuario;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarUsuario
+(
+ip_idEmpleado char(7),
+ip_clave VARCHAR(30),
+ip_idRol CHAR(1),
+
+ip_idEmpleadoR CHAR(7)
+)
+begin
+		insert into tb_usuario
+		(
+		idEmpleado,
+		clave,
+		idRol
+		) 
+		values(
+				ip_idEmpleado,
+				ip_clave,
+				ip_idRol
+		);
+call registrarLog(ip_idEmpleadoR, CONCAT("Usuario registrado: ",ip_idEmpleado), "INSERT");
+END$$
+Delimiter ;
 
 
 
-call usp_registrarUsuario('EMP0001', '123', 1);
-call usp_registrarUsuario('EMP0002', '123', 2);
-call usp_registrarUsuario('EMP0003', '123', 3);
+call usp_registrarUsuario('EMP0001', '123', 1, '1');
+call usp_registrarUsuario('EMP0002', '123', 2, '1');
+call usp_registrarUsuario('EMP0004', '123', 3, '1');
+call usp_registrarUsuario('EMP0005', '123', 3, '1');
 select*from tb_usuario;
 
-call validarEmpleado('EMP0001', '123', @salida);
+-- ------------------------------------------------
+
+DROP PROCEDURE IF EXISTS usp_actualizarUsuario;
+DELIMITER $$
+CREATE PROCEDURE usp_actualizarUsuario
+(
+ip_idEmpleado char(7),
+ip_clave VARCHAR(30),
+ip_idRol CHAR(1),
+ip_idEstado CHAR(1),
+
+ip_idEmpleadoR CHAR(7)
+)
+begin
+	UPDATE tb_usuario SET
+							clave=ip_clave,
+							idRol=ip_idRol, 
+							idEstado=ip_idEstado 
+    WHERE   idEmpleado=ip_idEmpleado;
+call registrarLog(ip_idEmpleadoR, CONCAT("Usuario actualizado: ",ip_idEmpleado), "UPDATE");
+END$$
+Delimiter ;
+
+
+
+-- ----------------------------------------------
+DROP PROCEDURE IF EXISTS usp_eliminarUsuario;
+DELIMITER $$
+CREATE PROCEDURE usp_eliminarUsuario
+(
+ip_idEmpleado char(7),
+
+ip_idEmpleadoR CHAR(7)
+)
+begin
+	UPDATE tb_usuario SET
+							idEstado='0' 
+    WHERE   idEmpleado=ip_idEmpleado;
+call registrarLog(ip_idEmpleadoR, CONCAT("Usuario eliminado: ",ip_idEmpleado), "DELETE");
+END$$
+Delimiter ;
+
+
+-- ----------------------------------------------
+DROP PROCEDURE IF EXISTS usp_buscarUsuario;
+DELIMITER $$
+CREATE PROCEDURE usp_buscarUsuario
+(
+ip_idEmpleado char(7)
+)
+begin
+	SELECT*FROM tb_usuario WHERE idEmpleado=ip_idEmpleado;
+END$$
+Delimiter ;
+
+CALL usp_buscarUsuario('EMP0001');
+-- -----------------------------------------------
+
+
+
+DROP PROCEDURE IF EXISTS usp_validarUsuario;
+DELIMITER $$
+CREATE PROCEDURE usp_validarUsuario
+(
+ip_idEmpleado char(7), 
+ip_clave varchar(30),
+INOUT op_idEmpleado char(7)
+)
+BEGIN
+      select 
+           u.idEmpleado,
+           u.clave,
+           r.descRol, 
+           es.descEstado,
+           e.nomEmpleado,
+           e.apepaEmpleado, 
+           e.apemaEmpleado
+	  from tb_usuario as u 
+      inner join tb_empleado as e
+      on u.idEmpleado=e.idEmpleado
+	  inner join tb_rol as r
+      on u.idRol=r.idRol
+      inner join tb_estado as es
+      on u.idEstado=es.idEstado
+      where u.idEmpleado=ip_idEmpleado and u.clave=ip_clave;
+
+	 set op_idEmpleado=concat((SELECT u.idEmpleado FROM tb_usuario as u where u.idEmpleado=ip_idEmpleado and u.clave=ip_clave));
+
+
+END$$
+Delimiter ;
+
+
+
+
+
+call usp_validarUsuario('EMP0001', '123', @salida);
 select @salida;
 
 
-select*from tb_vehiculo;
 
 
+
+
+
+
+
+
+
+-- ----------------------------------------------------------
+
+
+
+
+DROP PROCEDURE IF EXISTS usp_registrarOrdenRecojo;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarOrdenRecojo
+(
+ip_idCliente CHAR(7),
+ip_direccionRecojo varchar(300),
+ip_fechaRecojo DATE,
+ip_horaRecojo  TIME,
+-- Parametro del empleado quien registra orden de recojo
+ip_idEmpleadoR CHAR(7),
+
+-- Parametro a retornar
+INOUT op_idSOR char(7)
+)
+BEGIN
+
+		   declare idSORAuto char(7);
+		   set     idSORAuto=CalcularIdOrdenRecojo();
+		   insert into tb_ordenRecojo
+			(
+			idOR,
+			idCliente,
+			direccionRecojo,
+			fechaRecojo,
+			horaRecojo
+			) 
+			values(
+            idSORAuto,
+			ip_idCliente,
+			ip_direccionRecojo,
+			ip_fechaRecojo,
+			ip_horaRecojo
+			);
+		   
+           SET op_idSOR=idSORAuto;
+	       call registrarLog(ip_idEmpleadoR, CONCAT("SOR Registrado: ",idSORAuto), "INSERT");
+
+END$$
+Delimiter ;
+
+
+Select *from tb_ordenRecojo;
+
+DROP PROCEDURE IF EXISTS usp_registrarEquipoVehicularOrdenRecojo;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarEquipoVehicularOrdenRecojo
+(
+ip_idOR CHAR(7),
+ip_idVeh CHAR(7)
+)
+BEGIN
+		   insert into tb_equipoVehicular_OrdenRecojo
+			(
+			idOR,
+			idVeh
+			) 
+			values
+            (
+			ip_idOR,
+			ip_idVeh
+			);
+		    -- Cambiar de estado al vehiculo como ocupado
+            update tb_vehiculo set idEstadoTrabajo='1' where idVeh=ip_idVeh;
+END$$
+Delimiter ;
+
+SELECT*FROM tb_equipoVehicular_OrdenRecojo;
+
+
+DROP PROCEDURE IF EXISTS usp_registrarEquipoPersonalOrdenRecojo;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarEquipoPersonalOrdenRecojo
+(
+ip_idOR CHAR(7),
+ip_idEmpleado CHAR(7)
+)
+BEGIN
+		   insert into tb_equipoPersonal_OrdenRecojo
+			(
+			idOR,
+			idEmpleado
+			) 
+			values
+            (
+			ip_idOR,
+			ip_idEmpleado
+			);
+
+		    -- Cambiar de estado al personal como ocupado
+            update tb_empleado set idEstadoTrabajo='1' where idEmpleado=ip_idEmpleado;
+END$$
+Delimiter ;
+
+
+SELECT*FROM tb_equipoPersonal_OrdenRecojo;
+
+
+
+DROP PROCEDURE IF EXISTS usp_detalleOrdenRecojo;
+DELIMITER $$
+CREATE PROCEDURE usp_detalleOrdenRecojo
+(
+ip_idOR CHAR(7),
+ip_descripcionTraslado VARCHAR(200),
+ip_cantidad INT,
+ip_idTipoUnidadMedida INT,
+ip_PesokG DECIMAL(6,2)
+)
+BEGIN
+		   insert into tb_detalle_ordenRecojo
+			(
+			idOR,
+			descripcionTraslado,
+            cantidad,
+			idTipoUnidadMedida,
+			PesokG
+			) 
+			values
+            (
+			ip_idOR,
+			ip_descripcionTraslado,
+            ip_cantidad, 
+			ip_idTipoUnidadMedida,
+			ip_PesokG
+			);
+END$$
+Delimiter ;
+
+
+
+
+
+
+
+-- GRT
+
+
+DROP PROCEDURE IF EXISTS usp_registrarGRT;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarGRT
+(
+ip_idEmpleado CHAR(7),
+ip_idVeh CHAR(7),
+ip_fecInicioTraslado DATE,
+ip_idCliRemitente char(7),
+ip_direcCliRemitente varchar(200),
+ip_nomCliDestinatario varchar(100),
+ip_apepaCliDestinatario varchar(100),
+ip_apemaCliDestinatario varchar(100),
+ip_idTipoDocId INT,
+ip_numDocCliDestinatario char(50),
+ip_direcClienteDestinatario varchar(200),
+ip_fechaMinTraslado DATE,
+ip_fechaMaxTraslado DATE,
+
+-- Parametro del empleado quien registra GRT
+ip_idEmpleadoR CHAR(7),
+
+-- Parametro para cambiar de estado a la tabla tb_OrdenRecojo
+ip_idSOR CHAR(7),
+
+-- Parametro a retornar
+INOUT op_idGRT char(7)
+)
+BEGIN
+
+		   declare idGRTAuto char(7);
+		   set     idGRTAuto=CalcularIdGRT();
+		   insert into tb_GRT
+			(
+			idGRT,
+			idEmpleado,
+			idVeh,
+			fecInicioTraslado,
+			idCliRemitente,
+			direcCliRemitente,
+			nomCliDestinatario,
+			apepaCliDestinatario,
+			apemaCliDestinatario,
+			idTipoDocId,
+			numDocCliDestinatario,
+			direcClienteDestinatario,
+			fechaMinTraslado,
+			fechaMaxTraslado
+			) 
+			values
+            (
+			idGRTAuto,
+			ip_idEmpleado,
+			ip_idVeh,
+			ip_fecInicioTraslado,
+			ip_idCliRemitente,
+			ip_direcCliRemitente,
+			ip_nomCliDestinatario,
+			ip_apepaCliDestinatario,
+			ip_apemaCliDestinatario,
+			ip_idTipoDocId,
+			ip_numDocCliDestinatario,
+			ip_direcClienteDestinatario,
+			ip_fechaMinTraslado,
+			ip_fechaMaxTraslado
+			);
+		   
+           update tb_ordenRecojo set idEstadoOr='1' where idOR=ip_idSOR;
+           SET op_idGRT=idGRTAuto;
+	       call registrarLog(ip_idEmpleadoR, CONCAT("GRT Registrado: ",idGRTAuto), "INSERT");
+
+END$$
+Delimiter ;
+
+select*from tB_GRT;
+select*from tb_detalle_GRT;
+
+
+DROP PROCEDURE IF EXISTS usp_registrarDGRT;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarDGRT
+(
+ip_idGRT CHAR(7),
+ip_numCodGR VARCHAR(30),
+ip_numCodFT VARCHAR(30),
+ip_descTraslado VARCHAR(30),
+ip_cantidad INT,
+ip_idTipoUnidadMedida INT,
+ip_pesoKg DECIMAL(18,6)
+)
+BEGIN
+
+		
+		   insert into tb_detalle_GRT
+			(
+			idGRT,
+			numCodGR,
+			numCodFT,
+			descTraslado,
+			cantidad,
+			idTipoUnidadMedida,
+			pesoKg
+			) 
+			values
+            (
+			ip_idGRT,
+			ip_numCodGR,
+			ip_numCodFT,
+			ip_descTraslado,
+			ip_cantidad,
+			ip_idTipoUnidadMedida,
+			ip_pesoKg
+			);
+END$$
+Delimiter ;
+
+-- ----
+
+DROP VIEW IF EXISTS vistaBuscarSOR;
+CREATE VIEW vistaBuscarSOR
+AS
+( 
+select
+sor.idOR,
+sor.idCliente,
+sor.direccionRecojo,
+concat(c.nomCliente," ",c.apePatCliente," ",c.apeMatCliente),
+tc.idTipoCliente,
+c.numDocumento,
+epo.idEmpleado,
+ec.licenCondEmpleado,
+evo.idVeh,
+v.placaVeh,
+sor.idEstadoOR
+from tb_ordenRecojo as sor
+inner join tb_cliente as c
+on c.idCliente=sor.idCliente
+inner join tb_tipo_cliente as tc
+on c.idTipoCliente=tc.idTipoCliente
+inner join tb_equipoPersonal_OrdenRecojo as epo
+on sor.idOR=epo.idOR
+inner join tb_empleado_conductor as ec
+on epo.idEmpleado=ec.idEmpleado
+inner join tb_equipoVehicular_OrdenRecojo as evo
+on sor.idOR=evo.idOR
+inner join tb_vehiculo as v
+on evo.idVeh=v.idVeh
+group by sor.idOR
+);
+SELECT*FROM vistaBuscarSOR where idEstadoOR='0';
+-- where sor.idOR=?
+
+DROP VIEW IF EXISTS vistaBuscarEquipoPersonal;
+CREATE VIEW vistaBuscarEquipoPersonal
+AS
+(
+select
+epor.idOR,
+epor.idEmpleado,
+e.idTipoEmpleado,
+te.nomCargo,
+e.nomEmpleado,
+e.apepaEmpleado,
+e.apemaEmpleado
+from tb_equipoPersonal_OrdenRecojo epor
+inner join tb_empleado as e
+on epor.idEmpleado=e.idEmpleado
+inner join tb_tipo_empleado as te
+on e.idTipoEmpleado=te.idTipoEmpleado
+where e.idTipoEmpleado!=3
+);
+SELECT*FROM vistaBuscarEquipoPersonal;
+
+
+-- ----------
+DROP VIEW IF EXISTS vistaListaGRT;
+CREATE VIEW vistaListaGRT
+AS( 
+Select 
+grt.idGRT,
+grt.idEmpleado,
+ec.licenCondEmpleado,
+grt.idVeh,
+v.placaVeh,
+
+grt.idCliRemitente,
+grt.direcCliRemitente,
+c.nomCliente,
+c.apePatCliente, 
+c.apeMatCliente, 
+c.idTipoCliente,
+tc.descTipoCliente, 
+c.numDocumento,
+
+grt.nomCliDestinatario,
+grt.apepaCliDestinatario,
+grt.apemaCliDestinatario,
+grt.idTipoDocId,
+tdi.descTipoDoc,
+
+grt.numDocCliDestinatario,
+grt.direcClienteDestinatario,
+
+grt.fechaMinTraslado,
+grt.fechaMaxTraslado,
+grt.idEstadoGRT,
+egrt.descEstadoGRT
+
+from tb_GRT as grt
+inner join tb_cliente as c 
+on grt.idCliRemitente=c.idCliente
+inner join tb_tipo_cliente as tc
+on c.idTipoCliente=tc.idTipoCliente
+inner join tb_tipo_documento_identificacion tdi
+on grt.idTipoDocId=tdi.idTipoDocId
+inner join tb_empleado_conductor as ec
+on ec.idEmpleado=grt.idEmpleado
+inner join tb_vehiculo as v
+on grt.idVeh=v.idVeh
+inner join tb_estadoGRT as egrt
+on grt.idEstadoGRT=egrt.idEstadoGRT
+group by grt.idGRT
+);
+
+SELECT*FROM vistaListaGRT where idEmpleado='EMP0005';
+SELECT*fROM TB_GRT;
 -- Vistas
 DROP VIEW IF EXISTS vistaListaVehiculos;
 CREATE VIEW vistaListaVehiculos 
@@ -1065,7 +1880,7 @@ on v.idEstadoTrabajo=et.idEstadoTrabajo
 );
 
 select*from vistaListaVehiculos;
-
+select*From vistaListaVehiculos where Estado!='INACTIVO' AND estadoTrabajo!='OCUPADO';
 
 -- Vista para listar empleados
 DROP VIEW IF EXISTS vistaListaEmpleados;
@@ -1095,3 +1910,90 @@ order by e.idEmpleado
 );
 
 select*From vistaListaEmpleados;
+select*From vistaListaEmpleados where estado!='INACTIVO' AND descEstado!='OCUPADO' && nomCargo!='ADMINISTRADOR'&& nomCargo!='RECEPCIONISTA';
+-- Vista para listar empleados
+DROP VIEW IF EXISTS vistaListaClientes;
+CREATE VIEW vistaListaClientes
+AS
+(
+SELECT
+c.idCliente,
+tc.descTipoCliente,
+c.nomCliente,
+c.apePatCliente,
+c.apeMatCliente,
+c.telefonoCliente,
+c.celularCliente,
+c.correoCliente,
+e.descEstado
+FROM tb_cliente as c
+inner join
+tb_tipo_cliente as tc
+on c.idTipoCliente=tc.idTipoCliente
+inner join
+tb_estado as e
+on c.idEstado=e.idEstado
+order by c.idCliente asc
+); 
+
+SELECT*FROM vistaListaClientes;
+
+-- -----------------------------------------------------
+
+-- vista para listarUsuarios
+DROP VIEW IF EXISTS vistaListaUsuarios;
+CREATE VIEW vistaListaUsuarios
+AS
+(
+SELECT
+u.idEmpleado,
+u.clave,
+r.descRol,
+e.descEstado
+FROM tb_usuario as u
+inner join
+tb_rol as r
+on u.idRol=r.idRol
+inner join
+tb_estado as e
+on u.idEstado=e.idEstado
+order by u.idEmpleado asc
+); 
+
+SELECT*FROM vistaListaUsuarios;
+
+-- ----------------------------------------------------
+
+DROP VIEW IF EXISTS vistaListaOrdenRecojos;
+CREATE VIEW vistaListaOrdenRecojos
+AS
+(
+SELECT
+sor.idOR,
+sor.idCliente,
+sor.direccionRecojo,
+sor.fechaRecojo,
+sor.horaRecojo,
+eor.descEstadoOR,
+por.idEmpleado,
+sor.idEstadoOR
+FROM tb_ordenRecojo as sor
+inner join tb_detalle_ordenRecojo as dsor
+on sor.idOR=dsor.idOR
+inner join tb_equipoPersonal_OrdenRecojo as por
+on sor.idOR=por.idOR
+inner join tb_empleado as e
+on por.idEmpleado=e.idEmpleado
+inner join tb_estadoOR as eor
+on sor.idEstadoOR=eor.idEstadoOR
+where e.idTipoEmpleado=3
+group by sor.idOR
+); 
+
+SELECT*FROM vistaListaOrdenRecojos where idEmpleado='EMP0004' and idEstadoOR='0';
+SELECT*FROM tb_detalle_ordenRecojo;
+
+
+
+
+
