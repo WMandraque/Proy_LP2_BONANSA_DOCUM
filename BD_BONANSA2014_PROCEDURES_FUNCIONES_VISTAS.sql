@@ -2,6 +2,58 @@
 USE bd_bonansa2014;
 
 
+DROP FUNCTION if exists CalcularIdIncidencia;
+DELIMITER $$
+CREATE FUNCTION CalcularIdIncidencia()-- Retornara el codigo del empleado convertido
+Returns CHAR(7)
+begin
+    
+	Declare ultimoRegistro char(7);
+    Declare numeroCapturado int;
+	Declare IdIncidenciaGenerado Char(7);
+	
+    -- Capturamos el ultimo registro!!
+	Set ultimoRegistro=(select max(idIncidencia)from tb_incidencias);
+
+    -- si no existen registros, retornaremos por default un codigo
+	if (ultimoRegistro is null) then
+    set IdIncidenciaGenerado='INC0001';
+    return IdIncidenciaGenerado;
+    end if;
+    
+    -- Si existe algun registro entonces
+
+    -- Separaremos los prefijos de los numeros quedandonos solo con los numeros
+    -- SUBSTR(ultimoRegistro, 4) ejemplo: EMP0001 entonces obtendremos:
+    -- 0001 que sera transformado en 1 al ser entero
+    set numeroCapturado=SUBSTR(ultimoRegistro, 4);
+    -- Aumentaremos + 1 , el numero capturado
+    set numeroCapturado=numeroCapturado+1;
+
+    -- si el numero aumentado es menor a ....
+    if(numeroCapturado<=9) then
+        -- concatenaremos 
+        set IdIncidenciaGenerado=CONCAT('INC000',numeroCapturado);
+    return IdIncidenciaGenerado;
+
+    elseif(numeroCapturado<=99) then
+        set IdIncidenciaGenerado=CONCAT('INC00',numeroCapturado);
+    return IdIncidenciaGenerado;
+
+    elseif(numeroCapturado<=999) then
+        set IdIncidenciaGenerado=CONCAT('INC0',numeroCapturado);
+    return IdIncidenciaGenerado;
+
+    else
+        set IdIncidenciaGenerado=CONCAT('INC',numeroCapturado);
+        return IdIncidenciaGenerado;
+    end if;
+end;
+$$
+Delimiter ;
+
+
+
 DROP FUNCTION if exists CalcularIdVehiculo;
 DELIMITER $$
 CREATE FUNCTION CalcularIdVehiculo()-- Retornara el codigo del empleado convertido
@@ -705,6 +757,60 @@ null,
 'EMP0001'
 );
 
+call usp_registrarEmpleado 
+( 
+'4', 
+'47084553', 
+'Ricardo', 
+'Lazo', 
+'Lazo', 
+'M', 
+'1980/07/08', 
+'Imperial 325', 
+'1231', 
+'6788767', 
+'99887865679', 
+'ricardo@bonansa.com', 
+null,
+'EMP0001'
+);
+
+call usp_registrarEmpleado 
+( 
+'4', 
+'47084553', 
+'Ramon', 
+'Garcia', 
+'Bernaola', 
+'M', 
+'1987/07/08', 
+'Arboleda 788', 
+'1231', 
+'6788767', 
+'99887865679', 
+'rgarcia@bonansa.com', 
+null,
+'EMP0001'
+);
+
+call usp_registrarEmpleado 
+( 
+'4', 
+'47084553', 
+'Abelardo', 
+'Ferraso', 
+'Suarez', 
+'M', 
+'1988/07/08', 
+'Los constructores 456', 
+'1231', 
+'6788767', 
+'99887865679', 
+'abelardoF@bonansa.com', 
+null,
+'EMP0001'
+);
+
 call usp_registrarEmpleadoConductor 
 ( 
 '3', 
@@ -768,25 +874,52 @@ null,
 'EMP0001'
 );
 
-
-
-call usp_registrarEmpleado 
+call usp_registrarEmpleadoConductor 
 ( 
-'4', 
+'3', 
 '47084553', 
-'Ricardo', 
-'Lazo', 
-'Lazo', 
+'Osvaldo', 
+'Cattone', 
+'Reymundo', 
 'M', 
-'1980/07/08', 
-'Imperial 325', 
+'1967/07/08', 
+'Insurgentes 677', 
 '1231', 
 '6788767', 
-'99887865679', 
-'ricardo@bonansa.com', 
+'966759235', 
+'ocattone@bonansa.com', 
 null,
+'123456789',
+1,
+1,
 'EMP0001'
 );
+
+call usp_registrarEmpleadoConductor 
+( 
+'3', 
+'47084553', 
+'Pablo', 
+'Escobar', 
+'Melendez', 
+'M', 
+'1986/07/08', 
+'Julio C. 677', 
+'1231', 
+'6788767', 
+'966759235', 
+'pabloE@bonansa.com', 
+null,
+'123456789',
+1,
+1,
+'EMP0001'
+);
+
+
+
+
+
 
 
 
@@ -1373,8 +1506,8 @@ Delimiter ;
 
 call usp_registrarUsuario('EMP0001', '123', 1, '1');
 call usp_registrarUsuario('EMP0002', '123', 2, '1');
-call usp_registrarUsuario('EMP0004', '123', 3, '1');
-call usp_registrarUsuario('EMP0005', '123', 3, '1');
+call usp_registrarUsuario('EMP0008', '123', 3, '1');
+call usp_registrarUsuario('EMP0009', '123', 3, '1');
 select*from tb_usuario;
 
 -- ------------------------------------------------
@@ -1701,8 +1834,85 @@ BEGIN
 END$$
 Delimiter ;
 
-select*from tB_GRT;
-select*from tb_detalle_GRT;
+DROP VIEW IF EXISTS vistaBuscarListaEquipoTrasladoGRT;
+CREATE VIEW vistaBuscarListaEquipoTrasladoGRT
+AS 
+(
+select
+eptgrt.idGRT,
+eptgrt.idEmpleado,
+e.nomEmpleado,
+e.apepaEmpleado,
+e.apemaEmpleado,
+te.nomCargo
+From tb_equipoTrasladoGRT as eptgrt
+inner join tb_empleado as e
+on eptgrt.idEmpleado=e.idEmpleado
+inner join tb_tipo_empleado as te
+on e.idTipoEmpleado=te.idTipoEmpleado
+);
+select*From vistaBuscarListaEquipoTrasladoGRT where idGRT='GRT0001';
+
+
+DROP VIEW IF EXISTS vistaBuscarListaDetalleGRT;
+CREATE VIEW vistaBuscarListaDetalleGRT
+AS 
+(
+select
+dgrt.idGRT,
+dgrt.descTraslado,
+dgrt.cantidad,
+tum.descTipoUnidadMedida,
+dgrt.pesoKg,
+dgrt.numCodGR,
+dgrt.numCodFT
+From tb_detalle_GRT as dGRT
+inner join tb_tipoUnidadMedida as tum
+on dGRT.idTipoUnidadMedida=tum.idTipoUnidadMedida
+);
+select*From vistaBuscarListaDetalleGRT where idGRT='GRT0001';
+
+DROP VIEW IF EXISTS vistaBuscarGRT;
+CREATE VIEW vistaBuscarGRT
+AS 
+(
+select
+grt.idGRT,
+grt.fecInicioTraslado,
+grt.idVeh,
+v.placaVeh,
+grt.idEmpleado,
+ec.licenCondEmpleado,
+c.idTipoCliente,
+c.numDocumento,
+grt.idCliRemitente,
+c.nomCliente,
+c.apePatCliente,
+c.apeMatCliente,
+grt.direcCliRemitente,
+grt.idTipoDocId,
+grt.numDocCliDestinatario,
+grt.nomCliDestinatario,
+grt.apepaCliDestinatario,
+grt.apemaCliDestinatario,
+grt.direcClienteDestinatario,
+grt.fechaMinTraslado,
+grt.fechaMaxTraslado,
+grt.idEstadoGRT
+from tB_GRT as grt
+inner join  tb_cliente as c
+on grt.idCliRemitente=c.idCliente
+inner join tb_tipo_cliente as tc
+on c.idTipoCliente=tc.idTipoCliente
+inner join tb_vehiculo as v
+on grt.idVeh=v.idVeh
+inner join tb_empleado as e
+on grt.idEmpleado=e.idEmpleado
+inner join tb_empleado_conductor as ec
+on e.idEmpleado=ec.idEmpleado
+);
+select*From vistaBuscarGRT;
+
 
 
 DROP PROCEDURE IF EXISTS usp_registrarDGRT;
@@ -1743,6 +1953,127 @@ BEGIN
 END$$
 Delimiter ;
 
+
+DROP PROCEDURE IF EXISTS usp_registrarEntregaGRT;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarEntregaGRT
+(
+ip_idGRT CHAR(7),
+ip_idEmpleadoR CHAR(7)
+)
+BEGIN
+update tB_GRT set idEstadoGRT='1' where idGRT=ip_idGRT;
+
+update tb_empleado as e
+inner join tb_grt as grt
+on grt.idEmpleado=e.idEmpleado
+set e.idEstadoTrabajo='0'
+where e.idEstadoTrabajo='1' and grt.idGRT=ip_idGRT;
+
+update tb_Vehiculo as v
+inner join tb_grt as grt
+on grt.idVeh=v.idVeh
+set v.idEstadoTrabajo='0'
+where v.idEstadoTrabajo='1' and grt.idGRT=ip_idGRT;
+
+update tb_empleado as e
+inner join tb_equipoTrasladoGRT as dgrt
+on dgrt.idEmpleado=e.idEmpleado
+set e.idEstadoTrabajo='0'
+where e.idEstadoTrabajo='1' and dgrt.idGRT=ip_idGRT;
+
+call registrarLog(ip_idEmpleadoR, CONCAT("Mercaderia Entregada: ",ip_idGRT), "UPDATE");
+
+END$$
+Delimiter ;
+
+
+
+DROP PROCEDURE IF EXISTS usp_registrarIncidencia;
+DELIMITER $$
+CREATE PROCEDURE usp_registrarIncidencia
+(
+ip_idEmpleado CHAR(7),
+ip_direccion VARCHAR(300),
+ip_descripcion VARCHAR(100) 
+)
+BEGIN
+		DECLARE idIncidenciaGenerado CHAR(7);
+        SET idIncidenciaGenerado=CalcularIdIncidencia();
+		INSERT INTO tb_incidencias 
+        (
+	    idIncidencia,
+	    idEmpleado,
+	    direccion,
+	    descripcion,
+	    fecha,
+	    hora
+        )
+		VALUES
+		(
+         idIncidenciaGenerado,
+         ip_idEmpleado,
+         ip_direccion,
+		 ip_descripcion,
+         curdate(),
+         curtime()
+        );
+       call registrarLog(ip_idEmpleado, CONCAT("Incidencia Registrada: ",idIncidenciaGenerado), "INSERT");
+
+END$$
+Delimiter ;
+
+
+DROP PROCEDURE IF EXISTS usp_actualizarIncidencia;
+DELIMITER $$
+CREATE PROCEDURE usp_actualizarIncidencia
+(
+  ip_idIncidencia CHAR(7) ,
+  ip_idEmpleado CHAR(7),
+  ip_direccion VARCHAR(300),
+  ip_descripcion VARCHAR(300),
+  ip_fecha DATE,
+  ip_hora TIME,
+  ip_idEstadoIncidencia CHAR(1),
+  ip_idEmpleadoR CHAR(7)
+)
+BEGIN
+		UPDATE tb_incidencias
+		SET 
+             idEmpleado=ip_idEmpleado,
+             direccion=ip_direccion,
+	         descripcion=ip_descripcion,
+             fecha=ip_fecha,
+             hora=ip_hora,
+             idEstadoIncidencia=ip_idEstadoIncidencia
+
+        WHERE  idIncidencia=ip_idIncidencia;
+        call registrarLog(ip_idEmpleadoR, CONCAT("Incidencia Actualizada: ",ip_idIncidencia), "UPDATE");
+
+END$$
+Delimiter ;
+
+
+Call usp_registrarIncidencia('EMP0001', 'Los chancas', 'LLanta reventada');
+select * from tb_incidencias;
+
+DROP VIEW IF EXISTS vista_listadoIncidencias;
+CREATE VIEW vista_listadoIncidencias
+AS
+(
+select
+i.idIncidencia,
+i.idEmpleado,
+i.direccion,
+i.descripcion,
+i.fecha,
+i.hora,
+i.idEstadoIncidencia,
+ei.descEstadoIncidencia
+from tb_incidencias as i
+inner join tb_estadoIncidencia as ei
+on i.idEstadoIncidencia=ei.idEstadoIncidencia
+);
 -- ----
 
 DROP VIEW IF EXISTS vistaBuscarSOR;
@@ -1993,7 +2324,10 @@ group by sor.idOR
 SELECT*FROM vistaListaOrdenRecojos where idEmpleado='EMP0004' and idEstadoOR='0';
 SELECT*FROM tb_detalle_ordenRecojo;
 
-
-
-
-
+SELECT COUNT(*) FROM tb_incidencias WHERE idEstadoIncidencia='0';
+SELECT count(*) FROM TB_EMPLEADO WHERE idTipoEmpleado=1;
+SELECT count(*) FROM TB_EMPLEADO WHERE idTipoEmpleado=2;
+SELECT count(*) FROM TB_EMPLEADO WHERE idTipoEmpleado=3;
+SELECT * FROM TB_GRT WHERE idEstadoGRT='0';
+SELECT*FROM vista_listadoIncidencias;
+SELECT * FROM TB_LOGGENERAL WHERE descripcion LIKE '%Incidencia Registrada:%' AND YEAR(fecha)=2015 AND MONTH(fecha)=1;

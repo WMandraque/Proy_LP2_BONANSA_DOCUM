@@ -46,6 +46,15 @@ idEstadoTrabajo char(1) primary key,
 descEstado VARCHAR(50) NOT NULL
 );
 
+
+drop table if exists tb_estadoIncidencia;
+CREATE TABLE tb_estadoIncidencia
+(
+idEstadoIncidencia char(1) primary key,
+descEstadoIncidencia VARCHAR(50) NOT NULL
+);
+
+
 drop table if exists tb_categoriavehiculo;
 CREATE  TABLE tb_categoriavehiculo
 (
@@ -260,7 +269,7 @@ direccionRecojo varchar(300),
 fechaRecojo date not null,
 horaRecojo  time not null,
 idEstadoOr  CHAR(1) default 0, 
-CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente) REFERENCES tb_cliente(idCliente),
+CONSTRAINT fk_tb_ordenRecojo_tb_cliente FOREIGN KEY(idCliente)   REFERENCES tb_cliente(idCliente),
 CONSTRAINT fk_tb_ordenRecojo_tb_estadoOR FOREIGN KEY(idEstadoOr) REFERENCES tb_estadoOR(idEstadoOr),
 CONSTRAINT pk_tb_ordenRecojo PRIMARY KEY(idOR)
 );
@@ -353,6 +362,22 @@ idEmpleado CHAR(7) NOT NULL,
 CONSTRAINT fk_tb_equipoTrasladoGRT_tb_empleado    FOREIGN KEY(idEmpleado)     REFERENCES tb_empleado(idEmpleado),
 CONSTRAINT pk_detalle_GRT PRIMARY KEY(idGRT, idEmpleado)
 );
+
+
+drop table if exists tb_incidencias;
+CREATE  TABLE tb_incidencias
+(
+  idIncidencia CHAR(7) PRIMARY KEY,
+  idEmpleado CHAR(7) NOT NULL ,
+  direccion VARCHAR(300) NOT NULL,
+  descripcion VARCHAR(300) NOT NULL ,
+  fecha DATE NOT NULL ,
+  hora TIME NOT NULL ,
+  idEstadoIncidencia CHAR(1) DEFAULT '0',
+  CONSTRAINT fk_tb_incidencias_tb_empleado    FOREIGN KEY(idEmpleado)     REFERENCES tb_empleado(idEmpleado),
+  CONSTRAINT fk_tb_incidencias_tb_estadoIncidencia    FOREIGN KEY(idEstadoIncidencia)     REFERENCES tb_estadoIncidencia(idEstadoIncidencia)
+);
+
 
 drop table if exists tb_logGeneral;
 CREATE  TABLE tb_logGeneral

@@ -1,23 +1,19 @@
 use bd_bonansa2014;
 
-
-
-
+INSERT INTO tb_estadoIncidencia(idEstadoIncidencia, descEstadoIncidencia) VALUES ('0','PENDIENTE'), ('1','ACEPTADA');
 INSERT INTO tb_estadoOR(idEstadoOR, descEstadoOR) VALUES ('0','PENDIENTE'), ('1','ACEPTADO');
 INSERT INTO tb_estadoGRT(idEstadoGRT, descEstadoGRT) VALUES ('0','EN CAMINO'), ('1','ENTREGADO');
 
 
 INSERT INTO tb_estado(idEstado, descEstado) VALUES ('1','ACTIVO'), ('0','INACTIVO');
 select *From tb_estado;
-select *From tb_estado where idEstado = 1;
+
 
 INSERT INTO tb_rol(idRol, descRol) VALUES ('1','ADMINISTRADOR'), ('2','RECEPCIONISTA'), ('3','CONDUCTOR');
 select*from tb_rol;
 
 INSERT INTO tb_estadoTrabajo VALUES ('1', 'OCUPADO'), ('0','DESOCUPADO');
 Select * from tb_estadoTrabajo where descEstado = 'OCUPADO';
-
-
 
 
 
