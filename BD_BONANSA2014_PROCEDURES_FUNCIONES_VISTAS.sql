@@ -1104,8 +1104,6 @@ END //
 Delimiter ;
 
 
-call usp_eliminarEmpleado('EMP0003', 'EMP0001');
-
 select*from tb_empleado;
 select*from tb_logGeneral;
 
@@ -1606,19 +1604,6 @@ Delimiter ;
 
 
 
-call usp_validarUsuario('EMP0001', '123', @salida);
-select @salida;
-
-
-
-
-
-
-
-
-
-
-
 -- ----------------------------------------------------------
 
 
@@ -2054,7 +2039,6 @@ END$$
 Delimiter ;
 
 
-Call usp_registrarIncidencia('EMP0001', 'Los chancas', 'LLanta reventada');
 select * from tb_incidencias;
 
 DROP VIEW IF EXISTS vista_listadoIncidencias;
@@ -2323,11 +2307,3 @@ group by sor.idOR
 
 SELECT*FROM vistaListaOrdenRecojos where idEmpleado='EMP0004' and idEstadoOR='0';
 SELECT*FROM tb_detalle_ordenRecojo;
-
-SELECT COUNT(*) FROM tb_incidencias WHERE idEstadoIncidencia='0';
-SELECT count(*) FROM TB_EMPLEADO WHERE idTipoEmpleado=1;
-SELECT count(*) FROM TB_EMPLEADO WHERE idTipoEmpleado=2;
-SELECT count(*) FROM TB_EMPLEADO WHERE idTipoEmpleado=3;
-SELECT * FROM TB_GRT WHERE idEstadoGRT='0';
-SELECT*FROM vista_listadoIncidencias;
-SELECT * FROM TB_LOGGENERAL WHERE descripcion LIKE '%Incidencia Registrada:%' AND YEAR(fecha)=2015 AND MONTH(fecha)=1;
